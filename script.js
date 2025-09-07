@@ -1,156 +1,180 @@
-// script.js — Preloader + GSAP animations + Asset Preloading + Shader Warm-up
+import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.150.1/build/three.module.js";
+import { vertexShader, fluidShader, displayShader } from "./shaders.js";
 
-console.log("Preloader script loaded ✅");
+const config = {
+  brushSize: 25.0,
+  brushStrength: 0.5,
+  distortionAmount: 2.5,
+  fluidDecay: 0.98,
+  trailLength: 0.8,
+  stopDecay: 0.85,
+  color1: "#ffffff", // pure white
+  color2: "#cccccc", // light gray
+  color3: "#aaaaaa", // medium gray
+  color4: "#888888", // darker gray
+  colorIntensity: 1.0,
+  softness: 1.0,
+};
 
-gsap.registerPlugin(SplitText);
-
-// ✅ Preload assets before running preloader animations
-function preloadAssets() {
-  const assets = ["logo_01.png", "mask.svg"];
-  const promises = assets.map(src => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.onload = resolve;
-      img.onerror = reject;
-      img.src = src;
-    });
-  });
-
-  return Promise.all(promises);
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  return [r, g, b];
 }
 
-let gradientModule;
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 
-// Warm-up gradient after 1.5s while preloader is running
-function warmupGradient() {
-  import("./gradient-script.js").then(mod => {
-    gradientModule = mod;
-    mod.initGradient();
-    console.log("🌈 Gradient warmed up in background");
-  });
-}
+const gradientCanvas = document.querySelector(".gradient-canvas");
+renderer.setSize(window.innerWidth, window.innerHeight);
+gradientCanvas.appendChild(renderer.domElement);
 
-document.fonts.ready.then(() => {
-  preloadAssets().then(() => {
-    console.log("✅ All assets preloaded");
+const fluidTarget1 = new THREE.WebGLRenderTarget(
+  window.innerWidth,
+  window.innerHeight,
+  {
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+    format: THREE.RGBAFormat,
+    type: THREE.FloatType,
+  },
+);
 
-    function createSplitTexts(elements) {
-      const splits = {};
-      elements.forEach(({ key, selector, type }) => {
-        const config = { type, mask: type };
-        if (type === "chars") config.charsClass = "char";
-        if (type === "lines") config.linesClass = "line";
-        splits[key] = SplitText.create(selector, config);
-      });
-      return splits;
-    }
+const fluidTarget2 = new THREE.WebGLRenderTarget(
+  window.innerWidth,
+  window.innerHeight,
+  {
+    minFilter: THREE.LinearFilter,
+    magFilter: THREE.LinearFilter,
+    format: THREE.RGBAFormat,
+    type: THREE.FloatType,
+  },
+);
 
-    const splitElements = [
-      { key: "logoChars", selector: ".preloader-logo h1", type: "chars" },
-      { key: "footerLines", selector: ".preloader-footer p", type: "lines" },
-      { key: "heroFooter", selector: ".hero-footer p", type: "lines" },
-    ];
+let currentFluidTarget = fluidTarget1;
+let previousFluidTarget = fluidTarget2;
+let frameCount = 0;
 
-    const splits = createSplitTexts(splitElements);
-
-    // Initial GSAP set state
-    gsap.set([splits.logoChars.chars], { x: "100%" });
-    gsap.set([splits.footerLines.lines, splits.heroFooter.lines], { y: "100%" });
-
-    function animateProgress(duration = 3) {
-      const tl = gsap.timeline();
-      const counterSteps = 5;
-      let currentProgress = 0;
-      for (let i = 0; i < counterSteps; i++) {
-        const finalStep = i === counterSteps - 1;
-        const targetProgress = finalStep
-          ? 1
-          : Math.min(currentProgress + Math.random() * 0.3 + 0.1, 0.9);
-        currentProgress = targetProgress;
-        tl.to(".preloader-progress-bar", {
-          scaleX: targetProgress,
-          duration: duration / counterSteps,
-          ease: "power2.out",
-        });
-      }
-      return tl;
-    }
-
-    const tl = gsap.timeline({ delay: 0.5 });
-
-    tl.to(splits.logoChars.chars, {
-      x: "0%",
-      stagger: 0.05,
-      duration: 1,
-      ease: "power4.inOut",
-    })
-      .to(
-        splits.footerLines.lines,
-        {
-          y: "0%",
-          stagger: 0.1,
-          duration: 1,
-          ease: "power4.inOut",
-        },
-        "0.25",
-      )
-      .add(animateProgress(), "<")
-      .set(".preloader-progress", { backgroundColor: "var(--base-300)" })
-      .call(() => {
-        // Warm up gradient in background after ~1.5s
-        setTimeout(warmupGradient, 1500);
-      })
-      .to(
-        splits.logoChars.chars,
-        {
-          x: "-100%",
-          stagger: 0.05,
-          duration: 1,
-          ease: "power4.inOut",
-        },
-        "-=0.5",
-      )
-      .to(
-        splits.footerLines.lines,
-        {
-          y: "-100%",
-          stagger: 0.1,
-          duration: 1,
-          ease: "power4.inOut",
-        },
-        "<",
-      )
-      .to(
-        ".preloader-progress",
-        {
-          opacity: 0,
-          duration: 0.5,
-          ease: "power3.out",
-        },
-        "-=0.25",
-      )
-      .to(
-        ".preloader-mask",
-        {
-          scale: 5,
-          duration: 2.5,
-          ease: "power3.out",
-        },
-        "<",
-      )
-      .to(
-        splits.heroFooter.lines,
-        {
-          y: 0,
-          stagger: 0.1,
-          duration: 1,
-          ease: "power4.out",
-        },
-        "-=0.8", // slight delay for smoother feel
-      )
-      // ✅ Reveal gradient (already running) after preloader
-      .call(() => {
-        if (gradientModule) gradientModule.startGradient();
-      });
-  });
+const fluidMaterial = new THREE.ShaderMaterial({
+  uniforms: {
+    iTime: { value: 0 },
+    iResolution: {
+      value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+    },
+    iMouse: { value: new THREE.Vector4(0, 0, 0, 0) },
+    iFrame: { value: 0 },
+    iPreviousFrame: { value: null },
+    uBrushSize: { value: config.brushSize },
+    uBrushStrength: { value: config.brushStrength },
+    uFluidDecay: { value: config.fluidDecay },
+    uTrailLength: { value: config.trailLength },
+    uStopDecay: { value: config.stopDecay },
+  },
+  vertexShader: vertexShader,
+  fragmentShader: fluidShader,
 });
+
+const displayMaterial = new THREE.ShaderMaterial({
+  uniforms: {
+    iTime: { value: 0 },
+    iResolution: {
+      value: new THREE.Vector2(window.innerWidth, window.innerHeight),
+    },
+    iFluid: { value: null },
+    uDistortionAmount: { value: config.distortionAmount },
+    uColor1: { value: new THREE.Vector3(...hexToRgb(config.color1)) },
+    uColor2: { value: new THREE.Vector3(...hexToRgb(config.color2)) },
+    uColor3: { value: new THREE.Vector3(...hexToRgb(config.color3)) },
+    uColor4: { value: new THREE.Vector3(...hexToRgb(config.color4)) },
+    uColorIntensity: { value: config.colorIntensity },
+    uSoftness: { value: config.softness },
+  },
+  vertexShader: vertexShader,
+  fragmentShader: displayShader,
+});
+
+const geometry = new THREE.PlaneGeometry(2, 2);
+const fluidPlane = new THREE.Mesh(geometry, fluidMaterial);
+const displayPlane = new THREE.Mesh(geometry, displayMaterial);
+
+let mouseX = 0,
+  mouseY = 0;
+let prevMouseX = 0,
+  prevMouseY = 0;
+let lastMoveTime = 0;
+
+document.addEventListener("mousemove", (e) => {
+  const rect = gradientCanvas.getBoundingClientRect();
+  prevMouseX = mouseX;
+  prevMouseY = mouseY;
+  mouseX = e.clientX - rect.left;
+  mouseY = rect.height - (e.clientY - rect.top);
+  lastMoveTime = performance.now();
+  fluidMaterial.uniforms.iMouse.value.set(
+    mouseX,
+    mouseY,
+    prevMouseX,
+    prevMouseY,
+  );
+});
+
+document.addEventListener("mouseleave", () => {
+  fluidMaterial.uniforms.iMouse.value.set(0, 0, 0, 0);
+});
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  const time = performance.now() * 0.001;
+  fluidMaterial.uniforms.iTime.value = time;
+  displayMaterial.uniforms.iTime.value = time;
+  fluidMaterial.uniforms.iFrame.value = frameCount;
+
+  if (performance.now() - lastMoveTime > 100) {
+    fluidMaterial.uniforms.iMouse.value.set(0, 0, 0, 0);
+  }
+
+  fluidMaterial.uniforms.uBrushSize.value = config.brushSize;
+  fluidMaterial.uniforms.uBrushStrength.value = config.brushStrength;
+  fluidMaterial.uniforms.uFluidDecay.value = config.fluidDecay;
+  fluidMaterial.uniforms.uTrailLength.value = config.trailLength;
+  fluidMaterial.uniforms.uStopDecay.value = config.stopDecay;
+
+  displayMaterial.uniforms.uDistortionAmount.value = config.distortionAmount;
+  displayMaterial.uniforms.uColorIntensity.value = config.colorIntensity;
+  displayMaterial.uniforms.uSoftness.value = config.softness;
+  displayMaterial.uniforms.uColor1.value.set(...hexToRgb(config.color1));
+  displayMaterial.uniforms.uColor2.value.set(...hexToRgb(config.color2));
+  displayMaterial.uniforms.uColor3.value.set(...hexToRgb(config.color3));
+  displayMaterial.uniforms.uColor4.value.set(...hexToRgb(config.color4));
+
+  fluidMaterial.uniforms.iPreviousFrame.value = previousFluidTarget.texture;
+  renderer.setRenderTarget(currentFluidTarget);
+  renderer.render(fluidPlane, camera);
+
+  displayMaterial.uniforms.iFluid.value = currentFluidTarget.texture;
+  renderer.setRenderTarget(null);
+  renderer.render(displayPlane, camera);
+
+  const temp = currentFluidTarget;
+  currentFluidTarget = previousFluidTarget;
+  previousFluidTarget = temp;
+
+  frameCount++;
+}
+
+window.addEventListener("resize", () => {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  renderer.setSize(width, height);
+  fluidMaterial.uniforms.iResolution.value.set(width, height);
+  displayMaterial.uniforms.iResolution.value.set(width, height);
+
+  fluidTarget1.setSize(width, height);
+  fluidTarget2.setSize(width, height);
+  frameCount = 0;
+});
+
+animate();
