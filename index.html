@@ -1,72 +1,47 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jithin's Gradient</title>
-    <link rel="stylesheet" href="/styles.css" />
-
-    <!-- Preloader CSS -->
-    <link rel="stylesheet" href="/preloader-styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jithin's Gradient Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- Preloader -->
+  <div class="preloader-progress">
+    <div class="preloader-progress-bar"></div>
+    <div class="preloader-logo"><h1>Loading...</h1></div>
+  </div>
 
-    <!-- Preloader HTML (can also be injected by JS) -->
-    <div class="preloader-overlay hidden" id="preloader-overlay">
-        <div class="preloader-progress">
-            <div class="preloader-progress-bar"></div>
-            <div class="preloader-logo">
-                <h1 class="preloader-title">Loading...</h1>
-            </div>
-        </div>
-        <div class="preloader-mask"></div>
-        <div class="preloader-content">
-            <div class="preloader-footer">
-                <p class="preloader-description">
-                    Spaces unfold in light and shadow, where structure finds its quiet rhythm, and time align in harmony.
-                </p>
-            </div>
-        </div>
+  <div class="preloader-mask"></div>
+
+  <div class="preloader-content">
+    <div class="preloader-footer">
+      <p>Spaces unfold in light and shadow, where structure finds its quiet rhythm, and time align in harmony.</p>
     </div>
+  </div>
 
-    <!-- Existing Navigation -->
-    <nav>
-        <div class="logo"><p>Jithin's Portfolio</p></div>
-        <div class="nav-items"></div>
-        <p>Index</p>
-        <p>Portfolio</p>
-        <p>Info</p>
-        <p>Contact</p>
-    </nav>
+  <!-- Hero Section with Gradient Background -->
+  <section class="hero">
+    <div class="gradient-canvas"></div>
+    <div class="hero-logo">
+      <img src="logo_01.png" alt="Orbit Studio Logo" />
+    </div>
+    <div class="hero-footer">
+      <p>Experiment 0469</p>
+      <p>Made by Jithin</p>
+    </div>
+  </section>
 
-    <!-- Existing Hero Section -->
-    <section class="hero">
-        <div class="gradient-canvas"></div>
-        <div class="hero-logo">
-            <img src="/logo_01.png" alt="" />
-        </div>
-        <div class="hero-footer">
-            <p>Experiment 0469</p>
-            <p>Made by Jithin</p>
-        </div>
-    </section>
+  <!-- GSAP -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
 
-    <!-- Existing Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-    <script src="/preloader-script.js"></script>
-    <script type="module" src="/shaders.js"></script>
-    <script type="module" src="/script.js"></script>
+  <!-- Preloader Animations -->
+  <script src="script.js"></script>
 
-    <script>
-        // Show the preloader immediately on page load
-        showPreloader();
-
-        // Hide the preloader once shaders and assets are ready
-        window.addEventListener('load', () => {
-            hidePreloader();
-        });
-    </script>
-
+  <!-- Gradient Scripts -->
+  <script type="module" src="shaders.js"></script>
+  <script type="module" src="gradient-script.js"></script>
 </body>
 </html>
