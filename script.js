@@ -368,85 +368,62 @@ class TextAnimation {
     const animeTextContainers = document.querySelectorAll(".anime-text-container");
 
     animeTextContainers.forEach((container) => {
+      // Set initial visibility for all words
+      const words = Array.from(container.querySelectorAll(".anime-text .word"));
+      words.forEach((word) => {
+        const wordText = word.querySelector("span");
+        word.style.opacity = "0.3"; // Start with low visibility instead of 0
+        wordText.style.opacity = "0.5"; // Text starts slightly visible
+      });
+
       ScrollTrigger.create({
         trigger: container,
         pin: container,
         start: "top top",
-        end: `+=${window.innerHeight * 4}`,
+        end: `+=${window.innerHeight * 3}`, // Reduced from 4 to 3 for faster progression
         pinSpacing: true,
         onUpdate: (self) => {
           const progress = self.progress;
-          const words = Array.from(container.querySelectorAll(".anime-text .word"));
           const totalWords = words.length;
 
           words.forEach((word, index) => {
             const wordText = word.querySelector("span");
 
-            if (progress < 0.7) {
-              // Reveal phase
-              const progressTarget = 0.7;
-              const revealProgress = Math.min(1, progress / progressTarget);
+            if (progress < 0.8) {
+              // Reveal phase - made more responsive
+              const revealProgress = progress / 0.8;
 
-              const overlapWords = 15;
-              const totalAnimationLength = 1 + overlapWords / totalWords;
-
+              const overlapWords = 8; // Reduced overlap for faster animation
               const wordStart = index / totalWords;
               const wordEnd = wordStart + overlapWords / totalWords;
 
-              const timelineScale = 1 / Math.min(
-                totalAnimationLength,
-                1 + (totalWords - 1) / totalWords + overlapWords / totalWords
-              );
+              const wordProgress = revealProgress < wordStart ? 0 :
+                revealProgress > wordEnd ? 1 :
+                (revealProgress - wordStart) / (wordEnd - wordStart);
 
-              const adjustedStart = wordStart * timelineScale;
-              const adjustedEnd = wordEnd * timelineScale;
-              const duration = adjustedEnd - adjustedStart;
+              // Ensure minimum visibility
+              const minOpacity = 0.1;
+              const finalOpacity = Math.max(minOpacity, wordProgress);
+              word.style.opacity = finalOpacity;
 
-              const wordProgress = revealProgress < adjustedStart ? 0 :
-                revealProgress > adjustedEnd ? 1 :
-                (revealProgress - adjustedStart) / duration;
-
-              word.style.opacity = wordProgress;
-
-              const backgroundFadeStart = wordProgress > 0.9 ? (wordProgress - 0.9) / 0.1 : 0;
-              const backgroundOpacity = Math.max(0, 1 - backgroundFadeStart);
+              // Background highlight
+              const backgroundOpacity = wordProgress > 0.7 ? 
+                Math.max(0, 1 - (wordProgress - 0.7) / 0.3) : 0;
               word.style.backgroundColor = `rgba(${this.wordHighlightBgColor}, ${backgroundOpacity})`;
 
-              const textRevealThreshold = 0.9;
-              const textRevealProgress = wordProgress > textRevealThreshold ?
-                (wordProgress - textRevealThreshold) / (1 - textRevealThreshold) : 0;
+              // Text reveal - starts earlier and more gradually
+              const textRevealProgress = wordProgress > 0.3 ? 
+                (wordProgress - 0.3) / 0.7 : 0;
+              wordText.style.opacity = Math.max(0.2, Math.pow(textRevealProgress, 0.3));
 
-              wordText.style.opacity = Math.pow(textRevealProgress, 0.5);
             } else {
-              // Reverse phase
-              const reverseProgress = (progress - 0.7) / 0.3;
-              word.style.opacity = 1;
-              const targetTextOpacity = 1;
-
-              const reverseOverlapWords = 5;
-              const reverseWordStart = index / totalWords;
-              const reverseWordEnd = reverseWordStart + reverseOverlapWords / totalWords;
-
-              const reverseTimelineScale = 1 / Math.max(
-                1,
-                (totalWords - 1) / totalWords + reverseOverlapWords / totalWords
-              );
-
-              const reverseAdjustedStart = reverseWordStart * reverseTimelineScale;
-              const reverseAdjustedEnd = reverseWordEnd * reverseTimelineScale;
-              const reverseDuration = reverseAdjustedEnd - reverseAdjustedStart;
-
-              const reverseWordProgress = reverseProgress < reverseAdjustedStart ? 0 :
-                reverseProgress > reverseAdjustedEnd ? 1 :
-                (reverseProgress - reverseAdjustedStart) / reverseDuration;
-
-              if (reverseWordProgress > 0) {
-                wordText.style.opacity = targetTextOpacity * (1 - reverseWordProgress);
-                word.style.backgroundColor = `rgba(${this.wordHighlightBgColor}, ${reverseWordProgress})`;
-              } else {
-                wordText.style.opacity = targetTextOpacity;
-                word.style.backgroundColor = `rgba(${this.wordHighlightBgColor}, 0)`;
-              }
+              // Exit phase - simplified
+              const exitProgress = (progress - 0.8) / 0.2;
+              const fadeOut = 1 - exitProgress;
+              
+              word.style.opacity = Math.max(0.1, fadeOut);
+              wordText.style.opacity = Math.max(0.1, fadeOut);
+              word.style.backgroundColor = `rgba(${this.wordHighlightBgColor}, ${exitProgress * 0.5})`;
             }
           });
         },
