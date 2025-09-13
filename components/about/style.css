@@ -154,25 +154,3 @@ section {
   }
 }
 
-/* === Fix black screen issue on pinned text animation === */
-.anime-text-container {
-  min-height: 100vh;      /* make sure it covers the viewport */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;     /* safe for layering */
-  overflow: hidden;       /* prevent text from spilling */
-}
-
-.anime-text-container .copy-container {
-  max-width: 900px;       /* keeps text nicely contained */
-  margin: 0 auto;
-  padding: 4rem 2rem;
-}
-
-.anime-text-container {
-  position: relative;
-  z-index: 10;       /* higher than hero gradient */
-  background: #fff;
-  min-height: 100vh;
-}
