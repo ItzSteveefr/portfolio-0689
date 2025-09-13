@@ -1,100 +1,129 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jithin's Portfolio</title>
-
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <!-- ================= PRELOADER ================= -->
-  <div class="preloader" id="preloader">
-    <!-- Counter animation (two wrappers of numbers) -->
-    <div class="count-wrapper">
-      <div class="count">
-        <div class="digit"><h1>9</h1></div>
-        <div class="digit"><h1>8</h1></div>
-        <div class="digit"><h1>7</h1></div>
-        <div class="digit"><h1>4</h1></div>
-        <div class="digit"><h1>2</h1></div>
-        <div class="digit"><h1>0</h1></div>
-      </div>
-    </div>
-    <div class="count-wrapper">
-      <div class="count">
-        <div class="digit"><h1>9</h1></div>
-        <div class="digit"><h1>5</h1></div>
-        <div class="digit"><h1>9</h1></div>
-        <div class="digit"><h1>7</h1></div>
-        <div class="digit"><h1>4</h1></div>
-        <div class="digit"><h1>0</h1></div>
-      </div>
-    </div>
-
-    <!-- Revealer SVG shapes -->
-    <div class="revealer revealer-1">
-      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
-        <path d="M75.9 0L77.2 34.2c0.8 20.9 17.6 37.7 38.5 38.5L151 74l-35.3 1.3c-20.9 0.8-37.7 17.6-38.5 38.5L75.9 148l-1.3-35.3c-0.8-20.9-17.6-37.7-38.5-38.5L0.9 74l35.3-1.3c20.9-0.8 37.7-17.6 38.5-38.5L75.9 0z" fill="white"/>
-      </svg>
-    </div>
-    <div class="revealer revealer-2">
-      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
-        <path d="M75.9 0L77.2 34.2c0.8 20.9 17.6 37.7 38.5 38.5L151 74l-35.3 1.3c-20.9 0.8-37.7 17.6-38.5 38.5L75.9 148l-1.3-35.3c-0.8-20.9-17.6-37.7-38.5-38.5L0.9 74l35.3-1.3c20.9-0.8 37.7-17.6 38.5-38.5L75.9 0z" fill="#CDFD50"/>
-      </svg>
-    </div>
-    <div class="revealer revealer-3">
-      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
-        <path d="M75.9 0L77.2 34.2c0.8 20.9 17.6 37.7 38.5 38.5L151 74l-35.3 1.3c-20.9 0.8-37.7 17.6-38.5 38.5L75.9 148l-1.3-35.3c-0.8-20.9-17.6-37.7-38.5-38.5L0.9 74l35.3-1.3c20.9-0.8 37.7-17.6 38.5-38.5L75.9 0z" fill="black"/>
-      </svg>
-    </div>
-  </div>
-  <!-- ================= END PRELOADER ================= -->
-
-  <!-- ================= MAIN CONTENT (Hero Section) ================= -->
-  <div class="main-content" id="mainContent">
-    <!-- Navigation -->
-    <nav>
-      <div class="logo"><p>Jithin's Portfolio</p></div>
-      <div class="nav-items">
-        <p>Index</p>
-        <p>Portfolio</p>
-        <p>Info</p>
-        <p>Contact</p>
-      </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-      <!-- Fluid gradient background (WebGL will render here) -->
-      <div class="gradient-canvas"></div>
-
-      <!-- Center logo -->
-      <div class="hero-logo">
-        <img src="./logo_01.png" alt="Jithin's Portfolio" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jithin's Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- ==================== -->
+    <!-- Preloader Component -->
+    <!-- ==================== -->
+    <div class="preloader" id="preloader">
+      <div class="count-wrapper">
+        <div class="count">
+          <div class="digit"><h1>9</h1></div>
+          <div class="digit"><h1>8</h1></div>
+          <div class="digit"><h1>7</h1></div>
+          <div class="digit"><h1>4</h1></div>
+          <div class="digit"><h1>2</h1></div>
+          <div class="digit"><h1>0</h1></div>
+        </div>
       </div>
 
-      <!-- Footer -->
-      <div class="hero-footer">
-        <p>Experiment 0469</p>
-        <p>Made by Jithin</p>
+      <div class="count-wrapper">
+        <div class="count">
+          <div class="digit"><h1>9</h1></div>
+          <div class="digit"><h1>5</h1></div>
+          <div class="digit"><h1>9</h1></div>
+          <div class="digit"><h1>7</h1></div>
+          <div class="digit"><h1>4</h1></div>
+          <div class="digit"><h1>0</h1></div>
+        </div>
       </div>
-    </section>
-  </div>
-  <!-- ================= END MAIN CONTENT ================= -->
 
-  <!-- Libraries -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script type="module" src="https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js"></script>
+      <!-- Preloader Revealers -->
+      <div class="revealer revealer-1">
+        <svg width="151" height="148" viewBox="0 0 151 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z"
+            fill="white"
+          />
+        </svg>
+      </div>
 
-  <!-- Custom JS -->
-  <script type="module" src="shaders.js"></script>
-  <script type="module" src="script.js"></script>
-</body>
+      <div class="revealer revealer-2">
+        <svg width="151" height="148" viewBox="0 0 151 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z"
+            fill="#CDFD50"
+          />
+        </svg>
+      </div>
+
+      <div class="revealer revealer-3">
+        <svg width="151" height="148" viewBox="0 0 151 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z"
+            fill="black"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <!-- ==================== -->
+    <!-- Main Content Wrapper -->
+    <!-- ==================== -->
+    <div class="main-content" id="mainContent">
+      <!-- ===== Navigation ===== -->
+      <nav>
+        <div class="logo">
+          <p>Jithin's Portfolio</p>
+        </div>
+        <div class="nav-items">
+          <p>Index</p>
+          <p>Portfolio</p>
+          <p>Info</p>
+          <p>Contact</p>
+        </div>
+      </nav>
+
+      <!-- ===== Hero Section (Fluid Gradient) ===== -->
+      <section class="hero">
+        <div class="gradient-canvas"></div>
+        <div class="hero-logo">
+          <img src="./logo_01.png" alt="Jithin's Portfolio" />
+        </div>
+        <div class="hero-footer">
+          <p>Experiment 0469</p>
+          <p>Made by Jithin</p>
+        </div>
+      </section>
+
+      <!-- ===== Animated Text Section ===== -->
+      <section class="about anime-text-container">
+        <div class="copy-container">
+          <div class="anime-text">
+            <p>
+              Huebase is a vibrant space for designers who think in motion and
+              build with intent. It's more than a tool - it's where bold ideas
+              turn into living interfaces, powered by color, rhythm, and creative
+              control.
+            </p>
+            <p>
+              We believe great design starts with clarity and expression ends.
+              That's why Huebase is built to simplify your workflow while
+              amplifying your creative reach. From the first concept to the final
+              handoff, it's a space where your ideas take shape, your palette
+              comes to life, and your interface begins.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ==================== -->
+    <!-- Scripts -->
+    <!-- ==================== -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script type="module" src="script.js"></script>
+  </body>
 </html>
