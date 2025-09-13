@@ -1,12 +1,12 @@
-// =====================
-// IMPORTS
-// =====================
+/* ===================== */
+/* IMPORTS & SHADERS     */
+/* ===================== */
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js";
 import { vertexShader, fluidShader, displayShader } from "./shaders.js";
 
-// =====================
-// PRELOADER ANIMATION
-// =====================
+/* ===================== */
+/* PRELOADER ANIMATION   */
+/* ===================== */
 class PreloaderAnimation {
   constructor(options = {}) {
     this.preloader = document.getElementById(options.preloaderId || "preloader");
@@ -22,6 +22,7 @@ class PreloaderAnimation {
       console.error("Preloader element not found");
       return;
     }
+
     this.setupAnimation();
   }
 
@@ -31,7 +32,6 @@ class PreloaderAnimation {
     const finalPosition = windowWidth - wrapperWidth;
     const stepDistance = finalPosition / 6;
 
-    // Counter animation
     this.timeline.to(".count", {
       x: -900,
       duration: 0.85,
@@ -55,7 +55,6 @@ class PreloaderAnimation {
       });
     }
 
-    // Revealers scaling
     gsap.set(".revealer svg", { scale: 0 });
 
     const delays = [6, 6.5, 7];
@@ -76,13 +75,12 @@ class PreloaderAnimation {
 
   completeAnimation() {
     if (this.preloader) {
-      // Fade out smoothly
+      // Smooth fade-out
       this.preloader.classList.add("hidden");
 
-      // Remove after fade transition
       setTimeout(() => {
         this.preloader.remove();
-      }, 900);
+      }, 900); // match CSS fade
     }
 
     if (this.mainContent) {
@@ -100,9 +98,9 @@ class PreloaderAnimation {
   }
 }
 
-// =====================
-// FLUID GRADIENT SYSTEM
-// =====================
+/* ===================== */
+/* FLUID GRADIENT HERO   */
+/* ===================== */
 class FluidGradient {
   constructor() {
     this.config = {
@@ -165,8 +163,16 @@ class FluidGradient {
       type: THREE.FloatType,
     };
 
-    this.fluidTarget1 = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, rtOptions);
-    this.fluidTarget2 = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, rtOptions);
+    this.fluidTarget1 = new THREE.WebGLRenderTarget(
+      window.innerWidth,
+      window.innerHeight,
+      rtOptions
+    );
+    this.fluidTarget2 = new THREE.WebGLRenderTarget(
+      window.innerWidth,
+      window.innerHeight,
+      rtOptions
+    );
 
     this.currentFluidTarget = this.fluidTarget1;
     this.previousFluidTarget = this.fluidTarget2;
@@ -225,7 +231,12 @@ class FluidGradient {
       this.mouseY = rect.height - (e.clientY - rect.top);
       this.lastMoveTime = performance.now();
 
-      this.fluidMaterial.uniforms.iMouse.value.set(this.mouseX, this.mouseY, this.prevMouseX, this.prevMouseY);
+      this.fluidMaterial.uniforms.iMouse.value.set(
+        this.mouseX,
+        this.mouseY,
+        this.prevMouseX,
+        this.prevMouseY
+      );
     });
 
     document.addEventListener("mouseleave", () => {
@@ -275,54 +286,27 @@ class FluidGradient {
   }
 }
 
-// =====================
-// INITIALIZATION
-// =====================
+/* ===================== */
+/* APP INIT              */
+/* ===================== */
 document.addEventListener("DOMContentLoaded", () => {
   const fluidGradient = new FluidGradient();
-  fluidGradient.init(); // Start WebGL right away, runs behind preloader
 
   const preloader = new PreloaderAnimation({
     preloaderId: "preloader",
     mainContentId: "mainContent",
     onComplete: () => {
-      console.log("Preloader complete!");
+      console.log("Preloader complete! Initializing fluid gradient...");
+      setTimeout(() => {
+        fluidGradient.init();
+      }, 200); // overlap preload fade with hero load
     },
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") preloader.skipAnimation();
-  });
-
-  // =====================
-  // ANIMATED TEXT SECTION
-  // =====================
-  // Split words into spans
-  document.querySelectorAll(".anime-text p").forEach((p) => {
-    const words = p.innerHTML.split(" ");
-    p.innerHTML = words
-      .map(
-        (word) => `<span class="word"><span class="keyword">${word}</span></span>`
-      )
-      .join(" ");
-  });
-
-  // GSAP ScrollTrigger animation
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.utils.toArray(".anime-text-container").forEach((section) => {
-    const words = section.querySelectorAll(".word");
-
-    gsap.from(words, {
-      opacity: 0,
-      y: 50,
-      stagger: 0.05,
-      duration: 0.6,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: section,
-        start: "top 80%", // Animate when section enters viewport
-      },
-    });
+    if (e.key === "Escape") {
+      preloader.skipAnimation();
+      fluidGradient.init();
+    }
   });
 });
