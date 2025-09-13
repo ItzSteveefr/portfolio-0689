@@ -1,25 +1,32 @@
-/* ================= GLOBAL BASE STYLES ================= */
+/* ===================== */
+/* RESET & BASE STYLES   */
+/* ===================== */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: "Host Grotesk", sans-serif;
-  overflow: hidden; /* hidden during preloader, unlocked later */
+  overflow: hidden;
 }
+
 img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 p {
   color: #fff;
   font-size: 0.9rem;
   font-weight: 450;
 }
 
-/* ================= PRELOADER STYLES ================= */
+/* ===================== */
+/* PRELOADER STYLES      */
+/* ===================== */
 .preloader {
   position: fixed;
   top: 0;
@@ -33,40 +40,53 @@ p {
   overflow: hidden;
   z-index: 9999;
   font-family: "PP Editorial Old", serif;
+
+  /* Fade-out transition */
   opacity: 1;
   transition: opacity 0.8s ease;
 }
+
 .preloader.hidden {
   opacity: 0;
-  pointer-events: none; /* ignore clicks while fading */
+  pointer-events: none;
 }
+
 .count-wrapper {
+  position: relative;
   width: 180px;
   height: 360px;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   will-change: transform;
 }
+
 .count {
-  width: 1080px; /* 6 * 180 */
+  position: relative;
+  width: 1080px;
   height: 360px;
   display: flex;
   justify-content: space-between;
   transform: translateX(-1080px);
+  will-change: transform;
 }
+
 .digit {
+  position: relative;
   width: 180px;
   height: 360px;
-  position: relative;
 }
+
 .digit h1 {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: max-content;
   font-size: 360px;
-  font-weight: 300;
+  font-weight: lighter;
   line-height: 1;
+  font-family: "PP Editorial Old", serif;
 }
+
 .revealer {
   position: absolute;
   top: 50%;
@@ -74,18 +94,23 @@ p {
   transform: translate(-50%, -50%);
 }
 
-/* ================= MAIN CONTENT (Hero Section) ================= */
+/* ===================== */
+/* MAIN CONTENT          */
+/* ===================== */
 .main-content {
   opacity: 0;
   transform: scale(0.95);
   transition: opacity 1.5s ease, transform 1.5s ease;
 }
+
 .main-content.loaded {
   opacity: 1;
   transform: scale(1);
 }
 
-/* Navigation & Footer */
+/* ===================== */
+/* NAVIGATION & FOOTER   */
+/* ===================== */
 nav,
 .hero-footer {
   position: absolute;
@@ -100,27 +125,37 @@ nav,
   transform: translateY(-20px);
   transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
 }
+
 .main-content.loaded nav,
 .main-content.loaded .hero-footer {
   opacity: 1;
   transform: translateY(0);
 }
+
 .nav-items {
   display: flex;
   gap: 4rem;
 }
+
+nav .logo p {
+  font-weight: 700;
+}
+
 .hero-footer {
   bottom: 0;
   transition-delay: 0.7s;
 }
 
-/* Hero Section */
+/* ===================== */
+/* HERO SECTION          */
+/* ===================== */
 section.hero {
   position: relative;
   width: 100vw;
   height: 100svh;
   overflow: hidden;
 }
+
 .hero-logo {
   position: absolute;
   top: 50%;
@@ -130,10 +165,12 @@ section.hero {
   opacity: 0;
   transition: opacity 1.2s ease 0.8s, transform 1.2s ease 0.8s;
 }
+
 .main-content.loaded .hero-logo {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
+
 .gradient-canvas {
   position: absolute;
   top: 0;
@@ -142,13 +179,87 @@ section.hero {
   height: 100%;
 }
 
-/* ================= RESPONSIVE ================= */
+/* ===================== */
+/* RESPONSIVE            */
+/* ===================== */
 @media (max-width: 1000px) {
   nav {
     flex-direction: column;
     gap: 2rem;
   }
+
   .hero-logo {
     width: 40%;
+  }
+}
+
+/* ===================== */
+/* ANIMATED TEXT SECTION */
+/* ===================== */
+.anime-text-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem 2rem;
+  background-color: #000; /* keep consistent dark bg */
+}
+
+.copy-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 900px;
+}
+
+.anime-text {
+  width: 100%;
+}
+
+.anime-text p {
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.anime-text .word {
+  display: inline-block;
+  position: relative;
+  margin-right: 0.2rem;
+  margin-bottom: 0.2rem;
+  padding: 0.1rem 0.2rem;
+  border-radius: 2rem;
+  will-change: background-color, opacity, transform;
+}
+
+.anime-text .word span.keyword {
+  position: relative;
+  display: inline-block;
+  padding: 0.1rem 0;
+  border-radius: 2rem;
+  color: #141414;
+}
+
+.anime-text .word span.keyword::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% + 1rem);
+  height: calc(100% + 0.4rem);
+  border-radius: 2rem;
+  background-color: #ffffff;
+  z-index: -1;
+}
+
+/* Responsive text adjustments */
+@media (max-width: 768px) {
+  .anime-text p {
+    font-size: 1.4rem;
   }
 }
