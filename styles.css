@@ -193,3 +193,36 @@ section.hero {
     width: 40%;
   }
 }
+
+/* ================= OVERLAP TRANSITION ================= */
+
+/* Keep hero fixed so it stays while scrolling */
+.hero {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 1; /* hero below about */
+}
+
+/* Ensure WebGL gradient stays behind everything */
+.hero .gradient-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Placeholder (about component wrapper) */
+#text-animation-placeholder {
+  position: relative;
+  z-index: 2;       /* sits above hero */
+  margin-top: 100vh; /* starts below hero */
+  min-height: 100vh;
+  background: #fff;  /* can change to rgba(255,255,255,0.95) for semi-transparent */
+  transform: translateY(0);
+  transition: transform 0.1s ease-out;
+}
