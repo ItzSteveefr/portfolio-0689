@@ -9,9 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" />
 
-  <!-- Main stylesheet -->
+  <!-- Main stylesheet (no text-animation component) -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -61,7 +60,7 @@
   </div>
   <!-- ================= END PRELOADER ================= -->
 
-  <!-- ================= MAIN CONTENT ================= -->
+  <!-- ================= MAIN CONTENT (Hero) ================= -->
   <div class="main-content" id="mainContent">
     <!-- Navigation -->
     <nav>
@@ -87,73 +86,13 @@
         <p>Made by Jithin</p>
       </div>
     </section>
-
-    <!-- About Section with Text Animation -->
-    <section class="about anime-text-container">
-      <div class="copy-container">
-        <div class="anime-text">
-          <p>
-            We craft vibrant digital experiences that transform your brand into
-            a living, breathing entity. Our approach brings clarity to complex
-            ideas through intuitive design that resonates with your audience on
-            every level.
-          </p>
-          <p>
-            Every project begins with understanding your unique vision. We
-            believe in the power of interactive storytelling to create
-            meaningful connections between brands and their communities through
-            purposeful expression.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta">
-      <div class="copy-container">
-        <h1>
-          Ready to give your brand the clarity and expression it deserves?
-        </h1>
-      </div>
-    </section>
-
-    <!-- Features Section with Text Animation -->
-    <section class="features anime-text-container">
-      <div class="copy-container">
-        <div class="anime-text">
-          <p>
-            Our interactive approach takes shape through collaborative workshops
-            where your vision becomes reality. We create living digital
-            ecosystems that grow and evolve with your brand's journey.
-          </p>
-          <p>
-            From intuitive user interfaces to vibrant visual identities, every
-            element serves your storytelling needs. Our clarity-focused
-            methodology ensures your message reaches its intended audience with
-            powerful expression.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Outro Section -->
-    <section class="outro">
-      <div class="copy-container">
-        <h1>
-          Let's shape the future of your brand through vibrant, interactive
-          design
-        </h1>
-      </div>
-    </section>
   </div>
   <!-- ================= END MAIN CONTENT ================= -->
 
   <!-- Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
 
-  <!-- Main script (module) -->
+  <!-- Main script (module) - imports shaders.js -->
   <script type="module" src="script.js"></script>
 </body>
 </html>
