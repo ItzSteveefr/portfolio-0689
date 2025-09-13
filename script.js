@@ -22,6 +22,7 @@ class PreloaderAnimation {
       console.error("Preloader element not found");
       return;
     }
+
     this.setupAnimation();
   }
 
@@ -139,6 +140,7 @@ class FluidGradient {
 
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     gradientCanvas.appendChild(this.renderer.domElement);
 
@@ -273,6 +275,8 @@ class FluidGradient {
 /* APP INIT              */
 /* ===================== */
 document.addEventListener("DOMContentLoaded", () => {
+  gsap.registerPlugin(ScrollTrigger);
+
   const fluidGradient = new FluidGradient();
 
   const preloader = new PreloaderAnimation({
@@ -292,15 +296,11 @@ document.addEventListener("DOMContentLoaded", () => {
       fluidGradient.init();
     }
   });
-});
 
-/* ===================== */
-/* SCROLL & TEXT EFFECTS */
-/* ===================== */
-document.addEventListener("DOMContentLoaded", () => {
-  gsap.registerPlugin(ScrollTrigger);
+  /* ===================== */
+  /* LENIS SCROLL + TEXT ANIMATION */
+  /* ===================== */
   const lenis = new Lenis();
-
   lenis.on("scroll", ScrollTrigger.update);
 
   gsap.ticker.add((time) => {
@@ -310,7 +310,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const animeTextParagraphs = document.querySelectorAll(".anime-text p");
   const wordHighlightBgColor = "60, 60, 60";
-
   const keywords = [
     "vibrant",
     "living",
@@ -323,6 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "vision",
   ];
 
+  // Wrap words
   animeTextParagraphs.forEach((paragraph) => {
     const text = paragraph.textContent;
     const words = text.split(/\s+/);
@@ -348,6 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // ScrollTrigger animations
   const animeTextContainers = document.querySelectorAll(".anime-text-container");
 
   animeTextContainers.forEach((container) => {
@@ -376,7 +377,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const wordEnd = wordStart + overlapWords / totalWords;
 
             const timelineScale =
-              1 / Math.min(totalAnimationLength, 1 + (totalWords - 1) / totalWords + overlapWords / totalWords);
+              1 /
+              Math.min(
+                totalAnimationLength,
+                1 + (totalWords - 1) / totalWords + overlapWords / totalWords
+              );
 
             const adjustedStart = wordStart * timelineScale;
             const adjustedEnd = wordEnd * timelineScale;
@@ -391,14 +396,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
             word.style.opacity = wordProgress;
 
-            const backgroundFadeStart = wordProgress > 0.9 ? (wordProgress - 0.9) / 0.1 : 0;
+            const backgroundFadeStart =
+              wordProgress > 0.9 ? (wordProgress - 0.9) / 0.1 : 0;
             const backgroundOpacity = Math.max(0, 1 - backgroundFadeStart);
             word.style.backgroundColor = `rgba(${wordHighlightBgColor}, ${backgroundOpacity})`;
 
             const textRevealThreshold = 0.9;
             const textRevealProgress =
               wordProgress > textRevealThreshold
-                ? (wordProgress - textRevealThreshold) / (1 - textRevealThreshold)
+                ? (wordProgress - textRevealThreshold) /
+                  (1 - textRevealThreshold)
                 : 0;
 
             wordText.style.opacity = Math.pow(textRevealProgress, 0.5);
@@ -412,7 +419,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const reverseWordEnd = reverseWordStart + reverseOverlapWords / totalWords;
 
             const reverseTimelineScale =
-              1 / Math.max(1, (totalWords - 1) / totalWords + reverseOverlapWords / totalWords);
+              1 /
+              Math.max(
+                1,
+                (totalWords - 1) / totalWords + reverseOverlapWords / totalWords
+              );
 
             const reverseAdjustedStart = reverseWordStart * reverseTimelineScale;
             const reverseAdjustedEnd = reverseWordEnd * reverseTimelineScale;
@@ -423,13 +434,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 ? 0
                 : reverseProgress > reverseAdjustedEnd
                 ? 1
-                : (revealProgress - reverseAdjustedStart) / reverseDuration;
+                : (progress - reverseAdjustedStart) / reverseDuration;
 
             if (reverseWordProgress > 0) {
               wordText.style.opacity = targetTextOpacity * (1 - reverseWordProgress);
               word.style.backgroundColor = `rgba(${wordHighlightBgColor}, ${reverseWordProgress})`;
             } else {
-              word.text.opacity = targetTextOpacity;
+              wordText.opacity = targetTextOpacity;
               word.style.backgroundColor = `rgba(${wordHighlightBgColor}, 0)`;
             }
           }
