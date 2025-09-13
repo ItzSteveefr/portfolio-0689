@@ -22,7 +22,6 @@ class PreloaderAnimation {
       console.error("Preloader element not found");
       return;
     }
-
     this.setupAnimation();
   }
 
@@ -75,12 +74,10 @@ class PreloaderAnimation {
 
   completeAnimation() {
     if (this.preloader) {
-      // Smooth fade-out
       this.preloader.classList.add("hidden");
-
       setTimeout(() => {
         this.preloader.remove();
-      }, 900); // match CSS fade
+      }, 900);
     }
 
     if (this.mainContent) {
@@ -163,16 +160,8 @@ class FluidGradient {
       type: THREE.FloatType,
     };
 
-    this.fluidTarget1 = new THREE.WebGLRenderTarget(
-      window.innerWidth,
-      window.innerHeight,
-      rtOptions
-    );
-    this.fluidTarget2 = new THREE.WebGLRenderTarget(
-      window.innerWidth,
-      window.innerHeight,
-      rtOptions
-    );
+    this.fluidTarget1 = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, rtOptions);
+    this.fluidTarget2 = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, rtOptions);
 
     this.currentFluidTarget = this.fluidTarget1;
     this.previousFluidTarget = this.fluidTarget2;
@@ -287,6 +276,70 @@ class FluidGradient {
 }
 
 /* ===================== */
+/* TEXT ANIMATION CLASS  */
+/* ===================== */
+class TextAnimation {
+  constructor() {
+    gsap.registerPlugin(ScrollTrigger);
+    this.init();
+  }
+
+  init() {
+    this.splitTextIntoWords();
+    this.setupScrollAnimations();
+  }
+
+  splitTextIntoWords() {
+    const containers = document.querySelectorAll(".anime-text");
+
+    containers.forEach(container => {
+      container.querySelectorAll("p").forEach(paragraph => {
+        const words = paragraph.innerText.split(" ");
+        paragraph.innerHTML = "";
+
+        words.forEach(word => {
+          const span = document.createElement("span");
+          span.classList.add("word");
+
+          const innerSpan = document.createElement("span");
+          innerSpan.innerText = word;
+
+          const keywords = [
+            "vibrant", "shape", "interactive",
+            "living", "expression", "storytelling",
+            "clarity", "vision", "intuitive"
+          ];
+          if (keywords.includes(word.toLowerCase())) {
+            innerSpan.classList.add("keyword", word.toLowerCase());
+          }
+
+          span.appendChild(innerSpan);
+          paragraph.appendChild(span);
+        });
+      });
+    });
+  }
+
+  setupScrollAnimations() {
+    document.querySelectorAll(".anime-text-container").forEach(section => {
+      const words = section.querySelectorAll(".word, .word span");
+
+      gsap.to(words, {
+        scrollTrigger: {
+          trigger: section,
+          start: "top 80%",
+          toggleActions: "play none none reset"
+        },
+        opacity: 1,
+        stagger: 0.05,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    });
+  }
+}
+
+/* ===================== */
 /* APP INIT              */
 /* ===================== */
 document.addEventListener("DOMContentLoaded", () => {
@@ -299,7 +352,8 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Preloader complete! Initializing fluid gradient...");
       setTimeout(() => {
         fluidGradient.init();
-      }, 200); // overlap preload fade with hero load
+        new TextAnimation(); // kick off text animations once hero is ready
+      }, 200);
     },
   });
 
@@ -307,6 +361,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") {
       preloader.skipAnimation();
       fluidGradient.init();
+      new TextAnimation();
     }
   });
 });
