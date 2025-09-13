@@ -186,9 +186,10 @@ section.hero {
 section {
   position: relative;
   width: 100vw;
-  height: 100svh;
+  min-height: 100svh;
   padding: 2em;
   overflow: hidden;
+  font-family: "DM Sans", sans-serif; /* apply DM Sans here */
 }
 
 .copy-container {
@@ -207,12 +208,10 @@ section {
   font-size: 5rem;
   font-weight: 900;
   line-height: 1;
-  font-family: "DM Sans", sans-serif;
 }
 
-/* Section background themes */
 .hero .copy-container {
-  background: #fe6d38;
+  background: none; /* hero is WebGL, don’t override */
 }
 
 .cta .copy-container {
@@ -228,7 +227,6 @@ section {
   border: 0.15rem dashed rgb(60, 60, 60);
 }
 
-/* Anime text styling */
 .anime-text {
   width: 60%;
 }
@@ -240,7 +238,6 @@ section {
   font-weight: 900;
   font-size: 2rem;
   line-height: 1;
-  font-family: "DM Sans", sans-serif;
 }
 
 .anime-text .word {
@@ -283,7 +280,6 @@ section {
   z-index: -1;
 }
 
-/* Color-coded highlights */
 .anime-text .word span.keyword.vibrant::before,
 .anime-text .word span.keyword.shape::before,
 .anime-text .word span.keyword.interactive::before {
