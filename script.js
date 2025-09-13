@@ -139,7 +139,6 @@ class FluidGradient {
 
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
-
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     gradientCanvas.appendChild(this.renderer.domElement);
 
@@ -220,12 +219,7 @@ class FluidGradient {
       this.mouseY = rect.height - (e.clientY - rect.top);
       this.lastMoveTime = performance.now();
 
-      this.fluidMaterial.uniforms.iMouse.value.set(
-        this.mouseX,
-        this.mouseY,
-        this.prevMouseX,
-        this.prevMouseY
-      );
+      this.fluidMaterial.uniforms.iMouse.value.set(this.mouseX, this.mouseY, this.prevMouseX, this.prevMouseY);
     });
 
     document.addEventListener("mouseleave", () => {
@@ -276,94 +270,9 @@ class FluidGradient {
 }
 
 /* ===================== */
-/* TEXT ANIMATION CLASS  */
-/* ===================== */
-class TextAnimation {
-  constructor() {
-    gsap.registerPlugin(ScrollTrigger);
-    this.init();
-  }
-
-  init() {
-    this.splitTextIntoWords();
-    this.setupScrollAnimations();
-  }
-
-  splitTextIntoWords() {
-    const containers = document.querySelectorAll(".anime-text");
-
-    containers.forEach(container => {
-      container.querySelectorAll("p").forEach(paragraph => {
-        const words = paragraph.innerText.split(" ");
-        paragraph.innerHTML = "";
-
-        words.forEach(word => {
-          const span = document.createElement("span");
-          span.classList.add("word");
-
-          const innerSpan = document.createElement("span");
-          innerSpan.innerText = word;
-
-          const keywords = [
-            "vibrant", "shape", "interactive",
-            "living", "expression", "storytelling",
-            "clarity", "vision", "intuitive"
-          ];
-          if (keywords.includes(word.toLowerCase())) {
-            innerSpan.classList.add("keyword", word.toLowerCase());
-          }
-
-          span.appendChild(innerSpan);
-          paragraph.appendChild(span);
-        });
-      });
-    });
-  }
-
-  setupScrollAnimations() {
-    document.querySelectorAll(".anime-text-container").forEach(section => {
-      const words = section.querySelectorAll(".word, .word span");
-
-      gsap.to(words, {
-        scrollTrigger: {
-          trigger: section,
-          start: "top 80%",
-          end: "bottom 60%",
-          scrub: false,
-          toggleActions: "play none none reset"
-        },
-        opacity: 1,
-        y: 0,
-        stagger: 0.05,
-        duration: 0.6,
-        ease: "power2.out"
-      });
-    });
-  }
-}
-
-/* ===================== */
-/* SMOOTH SCROLL (LENIS) */
-/* ===================== */
-function initSmoothScroll() {
-  const lenis = new Lenis({
-    smooth: true,
-    lerp: 0.1,
-  });
-
-  function raf(time) {
-    lenis.raf(time);
-    requestAnimationFrame(raf);
-  }
-
-  requestAnimationFrame(raf);
-}
-
-/* ===================== */
 /* APP INIT              */
 /* ===================== */
 document.addEventListener("DOMContentLoaded", () => {
-  initSmoothScroll();
   const fluidGradient = new FluidGradient();
 
   const preloader = new PreloaderAnimation({
@@ -373,7 +282,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Preloader complete! Initializing fluid gradient...");
       setTimeout(() => {
         fluidGradient.init();
-        new TextAnimation();
       }, 200);
     },
   });
@@ -382,7 +290,151 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") {
       preloader.skipAnimation();
       fluidGradient.init();
-      new TextAnimation();
     }
+  });
+});
+
+/* ===================== */
+/* SCROLL & TEXT EFFECTS */
+/* ===================== */
+document.addEventListener("DOMContentLoaded", () => {
+  gsap.registerPlugin(ScrollTrigger);
+  const lenis = new Lenis();
+
+  lenis.on("scroll", ScrollTrigger.update);
+
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+  });
+  gsap.ticker.lagSmoothing(0);
+
+  const animeTextParagraphs = document.querySelectorAll(".anime-text p");
+  const wordHighlightBgColor = "60, 60, 60";
+
+  const keywords = [
+    "vibrant",
+    "living",
+    "clarity",
+    "expression",
+    "shape",
+    "intuitive",
+    "storytelling",
+    "interactive",
+    "vision",
+  ];
+
+  animeTextParagraphs.forEach((paragraph) => {
+    const text = paragraph.textContent;
+    const words = text.split(/\s+/);
+    paragraph.innerHTML = "";
+
+    words.forEach((word) => {
+      if (word.trim()) {
+        const wordContainer = document.createElement("div");
+        wordContainer.className = "word";
+
+        const wordText = document.createElement("span");
+        wordText.textContent = word;
+
+        const normalizedWord = word.toLowerCase().replace(/[.,!?;:"]/g, "");
+        if (keywords.includes(normalizedWord)) {
+          wordContainer.classList.add("keyword-wrapper");
+          wordText.classList.add("keyword", normalizedWord);
+        }
+
+        wordContainer.appendChild(wordText);
+        paragraph.appendChild(wordContainer);
+      }
+    });
+  });
+
+  const animeTextContainers = document.querySelectorAll(".anime-text-container");
+
+  animeTextContainers.forEach((container) => {
+    ScrollTrigger.create({
+      trigger: container,
+      pin: container,
+      start: "top top",
+      end: `+=${window.innerHeight * 4}`,
+      pinSpacing: true,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        const words = Array.from(container.querySelectorAll(".anime-text .word"));
+        const totalWords = words.length;
+
+        words.forEach((word, index) => {
+          const wordText = word.querySelector("span");
+
+          if (progress < 0.7) {
+            const progressTarget = 0.7;
+            const revealProgress = Math.min(1, progress / progressTarget);
+
+            const overlapWords = 15;
+            const totalAnimationLength = 1 + overlapWords / totalWords;
+
+            const wordStart = index / totalWords;
+            const wordEnd = wordStart + overlapWords / totalWords;
+
+            const timelineScale =
+              1 / Math.min(totalAnimationLength, 1 + (totalWords - 1) / totalWords + overlapWords / totalWords);
+
+            const adjustedStart = wordStart * timelineScale;
+            const adjustedEnd = wordEnd * timelineScale;
+            const duration = adjustedEnd - adjustedStart;
+
+            const wordProgress =
+              revealProgress < adjustedStart
+                ? 0
+                : revealProgress > adjustedEnd
+                ? 1
+                : (revealProgress - adjustedStart) / duration;
+
+            word.style.opacity = wordProgress;
+
+            const backgroundFadeStart = wordProgress > 0.9 ? (wordProgress - 0.9) / 0.1 : 0;
+            const backgroundOpacity = Math.max(0, 1 - backgroundFadeStart);
+            word.style.backgroundColor = `rgba(${wordHighlightBgColor}, ${backgroundOpacity})`;
+
+            const textRevealThreshold = 0.9;
+            const textRevealProgress =
+              wordProgress > textRevealThreshold
+                ? (wordProgress - textRevealThreshold) / (1 - textRevealThreshold)
+                : 0;
+
+            wordText.style.opacity = Math.pow(textRevealProgress, 0.5);
+          } else {
+            const reverseProgress = (progress - 0.7) / 0.3;
+            word.style.opacity = 1;
+            const targetTextOpacity = 1;
+
+            const reverseOverlapWords = 5;
+            const reverseWordStart = index / totalWords;
+            const reverseWordEnd = reverseWordStart + reverseOverlapWords / totalWords;
+
+            const reverseTimelineScale =
+              1 / Math.max(1, (totalWords - 1) / totalWords + reverseOverlapWords / totalWords);
+
+            const reverseAdjustedStart = reverseWordStart * reverseTimelineScale;
+            const reverseAdjustedEnd = reverseWordEnd * reverseTimelineScale;
+            const reverseDuration = reverseAdjustedEnd - reverseAdjustedStart;
+
+            const reverseWordProgress =
+              reverseProgress < reverseAdjustedStart
+                ? 0
+                : reverseProgress > reverseAdjustedEnd
+                ? 1
+                : (revealProgress - reverseAdjustedStart) / reverseDuration;
+
+            if (reverseWordProgress > 0) {
+              wordText.style.opacity = targetTextOpacity * (1 - reverseWordProgress);
+              word.style.backgroundColor = `rgba(${wordHighlightBgColor}, ${reverseWordProgress})`;
+            } else {
+              word.text.opacity = targetTextOpacity;
+              word.style.backgroundColor = `rgba(${wordHighlightBgColor}, 0)`;
+            }
+          }
+        });
+      },
+    });
   });
 });
