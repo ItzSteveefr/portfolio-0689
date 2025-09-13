@@ -2,15 +2,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 const lenis = new Lenis();
 
+// ✅ Smooth scrolling + ScrollTrigger sync
 lenis.on("scroll", ScrollTrigger.update);
-
 gsap.ticker.add((time) => {
   lenis.raf(time * 1000);
 });
 gsap.ticker.lagSmoothing(0);
 
+// =====================
+// TEXT SPLITTING
+// =====================
 const animeTextParagraphs = document.querySelectorAll(".anime-text p");
-
 const wordHighlightBgColor = "60, 60, 60";
 
 const keywords = [
@@ -50,14 +52,17 @@ animeTextParagraphs.forEach((paragraph) => {
   });
 });
 
+// =====================
+// SCROLL ANIMATIONS
+// =====================
 const animeTextContainers = document.querySelectorAll(".anime-text-container");
 
 animeTextContainers.forEach((container) => {
-ScrollTrigger.create({
-  trigger: container,
-  start: "top center",
-  end: "bottom center",
-  scrub: true,
+  ScrollTrigger.create({
+    trigger: container,
+    start: "top center",
+    end: "bottom center",
+    scrub: true,
     onUpdate: (self) => {
       const progress = self.progress;
       const words = Array.from(container.querySelectorAll(".anime-text .word"));
@@ -142,11 +147,24 @@ ScrollTrigger.create({
               targetTextOpacity * (1 - reverseWordProgress);
             word.style.backgroundColor = `rgba(${wordHighlightBgColor}, ${reverseWordProgress})`;
           } else {
-            word.text.opacity = targetTextOpacity;
+            wordText.style.opacity = targetTextOpacity;
             word.style.backgroundColor = `rgba(${wordHighlightBgColor}, 0)`;
           }
         }
       });
     },
   });
+});
+
+// =====================
+// OPTIONAL: Fade in section as it overlaps hero
+// =====================
+gsap.from(".anime-text-container", {
+  scrollTrigger: {
+    trigger: ".anime-text-container",
+    start: "top bottom",
+    end: "top center",
+    scrub: true
+  },
+  opacity: 0
 });
