@@ -287,184 +287,26 @@ class FluidGradient {
 }
 
 /* ===================== */
-/* TEXT ANIMATION CLASS  */
-/* ===================== */
-class TextAnimation {
-  constructor() {
-    this.wordHighlightBgColor = "60, 60, 60";
-    this.keywords = [
-      "vibrant",
-      "living",
-      "clarity",
-      "expression",
-      "shape",
-      "intuitive",
-      "storytelling",
-      "interactive",
-      "vision",
-    ];
-    this.isInitialized = false;
-  }
-
-  init() {
-    if (this.isInitialized) return;
-
-    // Register ScrollTrigger
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Initialize Lenis for smooth scrolling
-    this.initSmoothScrolling();
-
-    // Setup text processing
-    this.processTextElements();
-
-    // Setup scroll animations
-    this.setupScrollAnimations();
-
-    this.isInitialized = true;
-  }
-
-  initSmoothScrolling() {
-    this.lenis = new Lenis();
-
-    this.lenis.on("scroll", ScrollTrigger.update);
-
-    gsap.ticker.add((time) => {
-      this.lenis.raf(time * 1000);
-    });
-    gsap.ticker.lagSmoothing(0);
-  }
-
-  processTextElements() {
-    const animeTextParagraphs = document.querySelectorAll(".anime-text p");
-
-    animeTextParagraphs.forEach((paragraph) => {
-      const text = paragraph.textContent;
-      const words = text.split(/\s+/);
-      paragraph.innerHTML = "";
-
-      words.forEach((word) => {
-        if (word.trim()) {
-          const wordContainer = document.createElement("div");
-          wordContainer.className = "word";
-
-          const wordText = document.createElement("span");
-          wordText.textContent = word;
-
-          const normalizedWord = word.toLowerCase().replace(/[.,!?;:"]/g, "");
-          if (this.keywords.includes(normalizedWord)) {
-            wordContainer.classList.add("keyword-wrapper");
-            wordText.classList.add("keyword", normalizedWord);
-          }
-
-          wordContainer.appendChild(wordText);
-          paragraph.appendChild(wordContainer);
-        }
-      });
-    });
-  }
-
-  setupScrollAnimations() {
-    const animeTextContainers = document.querySelectorAll(".anime-text-container");
-
-    animeTextContainers.forEach((container) => {
-      // Set initial visibility for all words
-      const words = Array.from(container.querySelectorAll(".anime-text .word"));
-      words.forEach((word) => {
-        const wordText = word.querySelector("span");
-        word.style.opacity = "0.3"; // Start with low visibility instead of 0
-        wordText.style.opacity = "0.5"; // Text starts slightly visible
-      });
-
-      ScrollTrigger.create({
-        trigger: container,
-        pin: container,
-        start: "top top",
-        end: `+=${window.innerHeight * 3}`, // Reduced from 4 to 3 for faster progression
-        pinSpacing: true,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const totalWords = words.length;
-
-          words.forEach((word, index) => {
-            const wordText = word.querySelector("span");
-
-            if (progress < 0.8) {
-              // Reveal phase - made more responsive
-              const revealProgress = progress / 0.8;
-
-              const overlapWords = 8; // Reduced overlap for faster animation
-              const wordStart = index / totalWords;
-              const wordEnd = wordStart + overlapWords / totalWords;
-
-              const wordProgress = revealProgress < wordStart ? 0 :
-                revealProgress > wordEnd ? 1 :
-                (revealProgress - wordStart) / (wordEnd - wordStart);
-
-              // Ensure minimum visibility
-              const minOpacity = 0.1;
-              const finalOpacity = Math.max(minOpacity, wordProgress);
-              word.style.opacity = finalOpacity;
-
-              // Background highlight
-              const backgroundOpacity = wordProgress > 0.7 ? 
-                Math.max(0, 1 - (wordProgress - 0.7) / 0.3) : 0;
-              word.style.backgroundColor = `rgba(${this.wordHighlightBgColor}, ${backgroundOpacity})`;
-
-              // Text reveal - starts earlier and more gradually
-              const textRevealProgress = wordProgress > 0.3 ? 
-                (wordProgress - 0.3) / 0.7 : 0;
-              wordText.style.opacity = Math.max(0.2, Math.pow(textRevealProgress, 0.3));
-
-            } else {
-              // Exit phase - simplified
-              const exitProgress = (progress - 0.8) / 0.2;
-              const fadeOut = 1 - exitProgress;
-              
-              word.style.opacity = Math.max(0.1, fadeOut);
-              wordText.style.opacity = Math.max(0.1, fadeOut);
-              word.style.backgroundColor = `rgba(${this.wordHighlightBgColor}, ${exitProgress * 0.5})`;
-            }
-          });
-        },
-      });
-    });
-  }
-}
-
-/* ===================== */
-/* APP INITIALIZATION    */
+/* APP INIT              */
 /* ===================== */
 document.addEventListener("DOMContentLoaded", () => {
   const fluidGradient = new FluidGradient();
-  const textAnimation = new TextAnimation();
 
   const preloader = new PreloaderAnimation({
     preloaderId: "preloader",
     mainContentId: "mainContent",
     onComplete: () => {
-      console.log("Preloader complete! Initializing components...");
-      
-      // Initialize WebGL gradient after short delay
+      console.log("Preloader complete! Initializing fluid gradient...");
       setTimeout(() => {
         fluidGradient.init();
-      }, 200);
-      
-      // Initialize text animation after content is loaded
-      setTimeout(() => {
-        textAnimation.init();
-      }, 500);
+      }, 200); // overlap preload fade with hero load
     },
   });
 
-  // Skip preloader with Escape key
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       preloader.skipAnimation();
-      setTimeout(() => {
-        fluidGradient.init();
-        textAnimation.init();
-      }, 100);
+      fluidGradient.init();
     }
   });
 });
