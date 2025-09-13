@@ -53,12 +53,11 @@ animeTextParagraphs.forEach((paragraph) => {
 const animeTextContainers = document.querySelectorAll(".anime-text-container");
 
 animeTextContainers.forEach((container) => {
-  ScrollTrigger.create({
-    trigger: container,
-    pin: container,
-    start: "top top",
-    end: `+=${window.innerHeight * 4}`,
-    pinSpacing: true,
+ScrollTrigger.create({
+  trigger: container,
+  start: "top center",
+  end: "bottom center",
+  scrub: true
     onUpdate: (self) => {
       const progress = self.progress;
       const words = Array.from(container.querySelectorAll(".anime-text .word"));
