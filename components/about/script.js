@@ -57,7 +57,7 @@ ScrollTrigger.create({
   trigger: container,
   start: "top center",
   end: "bottom center",
-  scrub: true
+  scrub: true,
     onUpdate: (self) => {
       const progress = self.progress;
       const words = Array.from(container.querySelectorAll(".anime-text .word"));
