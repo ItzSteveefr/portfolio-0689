@@ -97,12 +97,33 @@
   <script type="module" src="script.js"></script>
 
   <!-- Load text animation component dynamically -->
-  <script>
-    fetch("components/about/index.html")
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById("text-animation-placeholder").innerHTML = html;
+<!-- Load text animation component dynamically -->
+<script>
+  fetch("components/index.html")
+    .then(res => res.text())
+    .then(html => {
+      const placeholder = document.getElementById("text-animation-placeholder");
+      placeholder.innerHTML = html;
+
+      // Find and load linked CSS
+      placeholder.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+        const newLink = document.createElement("link");
+        newLink.rel = "stylesheet";
+        newLink.href = "components/" + link.getAttribute("href");
+        document.head.appendChild(newLink);
       });
-  </script>
+
+      // Find and load scripts
+      placeholder.querySelectorAll("script").forEach(oldScript => {
+        const newScript = document.createElement("script");
+        if (oldScript.src) {
+          newScript.src = "components/" + oldScript.getAttribute("src");
+        } else {
+          newScript.textContent = oldScript.textContent;
+        }
+        document.body.appendChild(newScript);
+      });
+    });
+</script>
 </body>
 </html>
