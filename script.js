@@ -310,3 +310,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// ================= OVERLAP TRANSITION =================
+window.addEventListener('scroll', () => {
+  const scrolled = window.pageYOffset;
+  const windowHeight = window.innerHeight;
+  const aboutSection = document.querySelector('#text-animation-placeholder');
+  const heroContent = document.querySelector('.hero-logo, .hero-footer'); // adjust if needed
+
+  if (scrolled >= 0 && scrolled <= windowHeight) {
+    // Move about section upward
+    const translateY = -scrolled;
+    aboutSection.style.transform = `translateY(${translateY}px)`;
+
+    // Fade out hero content
+    const opacity = Math.max(0, 1 - (scrolled / windowHeight) * 1.5);
+    if (heroContent) {
+      heroContent.style.opacity = opacity;
+    }
+  }
+});
