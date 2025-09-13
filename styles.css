@@ -9,8 +9,8 @@
 
 body {
   font-family: "Host Grotesk", sans-serif;
-  overflow: hidden;
-  background-color: #000;
+  overflow-x: hidden;
+  background-color: #141414;
 }
 
 img {
@@ -181,32 +181,8 @@ section.hero {
 }
 
 /* ===================== */
-/* RESPONSIVE            */
+/* TEXT ANIMATION SECTIONS */
 /* ===================== */
-@media (max-width: 1000px) {
-  nav {
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .hero-logo {
-    width: 40%;
-  }
-}
-
-@import url("https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
-
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "DM Sans", sans-serif;
-  background-color: #141414;
-}
-
 section {
   position: relative;
   width: 100vw;
@@ -231,12 +207,10 @@ section {
   font-size: 5rem;
   font-weight: 900;
   line-height: 1;
+  font-family: "DM Sans", sans-serif;
 }
 
-.hero .copy-container {
-  background: #fe6d38;
-}
-
+/* Section-specific backgrounds */
 .cta .copy-container {
   background: #c6fe69;
 }
@@ -248,10 +222,15 @@ section {
 .about .copy-container,
 .features .copy-container {
   border: 0.15rem dashed rgb(60, 60, 60);
+  background: transparent;
 }
 
+/* ===================== */
+/* TEXT ANIMATION STYLES */
+/* ===================== */
 .anime-text {
   width: 60%;
+  font-family: "DM Sans", sans-serif;
 }
 
 .anime-text p {
@@ -303,6 +282,7 @@ section {
   z-index: -1;
 }
 
+/* Keyword color variants */
 .anime-text .word span.keyword.vibrant::before,
 .anime-text .word span.keyword.shape::before,
 .anime-text .word span.keyword.interactive::before {
@@ -314,18 +294,38 @@ section {
 .anime-text .word span.keyword.storytelling::before {
   background-color: #fe6d38;
 }
+
 .anime-text .word span.keyword.clarity::before,
 .anime-text .word span.keyword.vision::before,
 .anime-text .word span.keyword.intuitive::before {
   background-color: #c6fe69;
 }
 
-.anime-text .word,
-.anime-text .word span {
-  opacity: 0;
+/* Initial state for animation - starts with low visibility instead of hidden */
+.anime-text .word {
+  opacity: 0.1;
 }
 
+.anime-text .word span {
+  opacity: 0.2;
+}
+
+/* ===================== */
+/* RESPONSIVE DESIGN     */
+/* ===================== */
 @media (max-width: 1000px) {
+  /* Navigation */
+  nav {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* Hero */
+  .hero-logo {
+    width: 40%;
+  }
+
+  /* Text Animation Sections */
   .copy-container h1 {
     width: 90%;
     font-size: 3rem;
