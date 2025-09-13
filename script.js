@@ -22,6 +22,7 @@ class PreloaderAnimation {
       console.error("Preloader element not found");
       return;
     }
+
     this.setupAnimation();
   }
 
@@ -74,10 +75,12 @@ class PreloaderAnimation {
 
   completeAnimation() {
     if (this.preloader) {
+      // Smooth fade-out
       this.preloader.classList.add("hidden");
+
       setTimeout(() => {
         this.preloader.remove();
-      }, 900);
+      }, 900); // match CSS fade
     }
 
     if (this.mainContent) {
@@ -139,6 +142,7 @@ class FluidGradient {
 
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     gradientCanvas.appendChild(this.renderer.domElement);
 
@@ -283,28 +287,6 @@ class FluidGradient {
 }
 
 /* ===================== */
-/* TEXT SCROLL ANIMATION */
-/* ===================== */
-function initTextAnimations() {
-  gsap.registerPlugin(ScrollTrigger);
-
-  gsap.utils.toArray(".anime-text p").forEach((el) => {
-    gsap.to(el, {
-      scrollTrigger: {
-        trigger: el,
-        start: "top 80%",
-        toggleActions: "play none none reverse",
-      },
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power3.out",
-      stagger: 0.2,
-    });
-  });
-}
-
-/* ===================== */
 /* APP INIT              */
 /* ===================== */
 document.addEventListener("DOMContentLoaded", () => {
@@ -317,8 +299,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Preloader complete! Initializing fluid gradient...");
       setTimeout(() => {
         fluidGradient.init();
-        initTextAnimations();
-      }, 200);
+      }, 200); // overlap preload fade with hero load
     },
   });
 
@@ -326,7 +307,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "Escape") {
       preloader.skipAnimation();
       fluidGradient.init();
-      initTextAnimations();
     }
   });
 });
