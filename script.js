@@ -1,8 +1,12 @@
-// Import dependencies
+// =====================
+// IMPORTS
+// =====================
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js";
 import { vertexShader, fluidShader, displayShader } from "./shaders.js";
 
-/* ================= PRELOADER CLASS ================= */
+// =====================
+// PRELOADER ANIMATION
+// =====================
 class PreloaderAnimation {
   constructor(options = {}) {
     this.preloader = document.getElementById(options.preloaderId || "preloader");
@@ -27,7 +31,7 @@ class PreloaderAnimation {
     const finalPosition = windowWidth - wrapperWidth;
     const stepDistance = finalPosition / 6;
 
-    // Initial counter animation
+    // Counter animation
     this.timeline.to(".count", {
       x: -900,
       duration: 0.85,
@@ -35,7 +39,6 @@ class PreloaderAnimation {
       ease: "power4.inOut",
     });
 
-    // Step through digits
     for (let i = 1; i <= 6; i++) {
       const xPosition = -900 + i * 180;
       this.timeline.to(".count", {
@@ -52,8 +55,9 @@ class PreloaderAnimation {
       });
     }
 
-    // Revealer SVGs
+    // Revealers scaling
     gsap.set(".revealer svg", { scale: 0 });
+
     const delays = [6, 6.5, 7];
     document.querySelectorAll(".revealer svg").forEach((el, i) => {
       gsap.to(el, {
@@ -62,7 +66,9 @@ class PreloaderAnimation {
         ease: "power4.inOut",
         delay: delays[i],
         onComplete: () => {
-          if (i === delays.length - 1) this.completeAnimation();
+          if (i === delays.length - 1) {
+            this.completeAnimation();
+          }
         },
       });
     });
@@ -70,13 +76,13 @@ class PreloaderAnimation {
 
   completeAnimation() {
     if (this.preloader) {
-      // Trigger fade-out
+      // Fade out smoothly
       this.preloader.classList.add("hidden");
 
-      // Remove DOM after fade completes
+      // Remove after fade transition
       setTimeout(() => {
         this.preloader.remove();
-      }, 900); // matches CSS transition (0.8s)
+      }, 900);
     }
 
     if (this.mainContent) {
@@ -85,8 +91,7 @@ class PreloaderAnimation {
     }
 
     this.onComplete();
-}
-
+  }
 
   skipAnimation() {
     this.timeline.kill();
@@ -95,7 +100,9 @@ class PreloaderAnimation {
   }
 }
 
-/* ================= FLUID GRADIENT CLASS ================= */
+// =====================
+// FLUID GRADIENT SYSTEM
+// =====================
 class FluidGradient {
   constructor() {
     this.config = {
@@ -137,6 +144,7 @@ class FluidGradient {
 
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
+
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     gradientCanvas.appendChild(this.renderer.domElement);
 
@@ -156,8 +164,10 @@ class FluidGradient {
       format: THREE.RGBAFormat,
       type: THREE.FloatType,
     };
+
     this.fluidTarget1 = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, rtOptions);
     this.fluidTarget2 = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight, rtOptions);
+
     this.currentFluidTarget = this.fluidTarget1;
     this.previousFluidTarget = this.fluidTarget2;
   }
@@ -176,7 +186,7 @@ class FluidGradient {
         uTrailLength: { value: this.config.trailLength },
         uStopDecay: { value: this.config.stopDecay },
       },
-      vertexShader,
+      vertexShader: vertexShader,
       fragmentShader: fluidShader,
     });
 
@@ -193,7 +203,7 @@ class FluidGradient {
         uColorIntensity: { value: this.config.colorIntensity },
         uSoftness: { value: this.config.softness },
       },
-      vertexShader,
+      vertexShader: vertexShader,
       fragmentShader: displayShader,
     });
   }
@@ -215,9 +225,7 @@ class FluidGradient {
       this.mouseY = rect.height - (e.clientY - rect.top);
       this.lastMoveTime = performance.now();
 
-      this.fluidMaterial.uniforms.iMouse.value.set(
-        this.mouseX, this.mouseY, this.prevMouseX, this.prevMouseY
-      );
+      this.fluidMaterial.uniforms.iMouse.value.set(this.mouseX, this.mouseY, this.prevMouseX, this.prevMouseY);
     });
 
     document.addEventListener("mouseleave", () => {
@@ -227,9 +235,11 @@ class FluidGradient {
     window.addEventListener("resize", () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
+
       this.renderer.setSize(width, height);
       this.fluidMaterial.uniforms.iResolution.value.set(width, height);
       this.displayMaterial.uniforms.iResolution.value.set(width, height);
+
       this.fluidTarget1.setSize(width, height);
       this.fluidTarget2.setSize(width, height);
       this.frameCount = 0;
@@ -238,6 +248,7 @@ class FluidGradient {
 
   animate() {
     requestAnimationFrame(() => this.animate());
+
     const time = performance.now() * 0.001;
     this.fluidMaterial.uniforms.iTime.value = time;
     this.displayMaterial.uniforms.iTime.value = time;
@@ -264,25 +275,54 @@ class FluidGradient {
   }
 }
 
-/* ================= INITIALIZATION ================= */
+// =====================
+// INITIALIZATION
+// =====================
 document.addEventListener("DOMContentLoaded", () => {
-  // 🔥 Start fluid gradient immediately (behind preloader)
   const fluidGradient = new FluidGradient();
-  fluidGradient.init();
+  fluidGradient.init(); // Start WebGL right away, runs behind preloader
 
-  // Preloader runs above it, revealing hero once finished
   const preloader = new PreloaderAnimation({
     preloaderId: "preloader",
     mainContentId: "mainContent",
     onComplete: () => {
-      console.log("Preloader complete → hero already running");
+      console.log("Preloader complete!");
     },
   });
 
-  // Dev shortcut: skip animation with Escape
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      preloader.skipAnimation();
-    }
+    if (e.key === "Escape") preloader.skipAnimation();
+  });
+
+  // =====================
+  // ANIMATED TEXT SECTION
+  // =====================
+  // Split words into spans
+  document.querySelectorAll(".anime-text p").forEach((p) => {
+    const words = p.innerHTML.split(" ");
+    p.innerHTML = words
+      .map(
+        (word) => `<span class="word"><span class="keyword">${word}</span></span>`
+      )
+      .join(" ");
+  });
+
+  // GSAP ScrollTrigger animation
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray(".anime-text-container").forEach((section) => {
+    const words = section.querySelectorAll(".word");
+
+    gsap.from(words, {
+      opacity: 0,
+      y: 50,
+      stagger: 0.05,
+      duration: 0.6,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: section,
+        start: "top 80%", // Animate when section enters viewport
+      },
+    });
   });
 });
