@@ -328,11 +328,14 @@ class TextAnimation {
         scrollTrigger: {
           trigger: section,
           start: "top 80%",
+          end: "bottom 60%",
+          scrub: false,
           toggleActions: "play none none reset"
         },
         opacity: 1,
+        y: 0,
         stagger: 0.05,
-        duration: 0.5,
+        duration: 0.6,
         ease: "power2.out"
       });
     });
@@ -340,9 +343,27 @@ class TextAnimation {
 }
 
 /* ===================== */
+/* SMOOTH SCROLL (LENIS) */
+/* ===================== */
+function initSmoothScroll() {
+  const lenis = new Lenis({
+    smooth: true,
+    lerp: 0.1,
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
+}
+
+/* ===================== */
 /* APP INIT              */
 /* ===================== */
 document.addEventListener("DOMContentLoaded", () => {
+  initSmoothScroll();
   const fluidGradient = new FluidGradient();
 
   const preloader = new PreloaderAnimation({
@@ -352,7 +373,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("Preloader complete! Initializing fluid gradient...");
       setTimeout(() => {
         fluidGradient.init();
-        new TextAnimation(); // kick off text animations once hero is ready
+        new TextAnimation();
       }, 200);
     },
   });
