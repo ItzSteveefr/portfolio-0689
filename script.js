@@ -264,8 +264,8 @@ document.addEventListener("DOMContentLoaded", () => {
     preloaderId: "preloader",
     mainContentId: "mainContent",
     onComplete: () => {
-      console.log("Preloader complete → initializing fluid gradient...");
-      setTimeout(() => fluidGradient.init(), 500);
+    console.log("Preloader complete → initializing fluid gradient...");
+    fluidGradient.init(); // no setTimeout
     },
   });
 
