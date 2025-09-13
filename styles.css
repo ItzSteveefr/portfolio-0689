@@ -10,6 +10,7 @@
 body {
   font-family: "Host Grotesk", sans-serif;
   overflow: hidden;
+  background-color: #000;
 }
 
 img {
@@ -33,7 +34,7 @@ p {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000; /* Black mask while loading */
+  background-color: #000;
   color: #fff;
   display: flex;
   align-items: flex-end;
@@ -190,76 +191,5 @@ section.hero {
 
   .hero-logo {
     width: 40%;
-  }
-}
-
-/* ===================== */
-/* ANIMATED TEXT SECTION */
-/* ===================== */
-.anime-text-container {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5rem 2rem;
-  background-color: #000; /* keep consistent dark bg */
-}
-
-.copy-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 900px;
-}
-
-.anime-text {
-  width: 100%;
-}
-
-.anime-text p {
-  margin-bottom: 2rem;
-  text-align: center;
-  color: #ffffff;
-  font-size: 2rem;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.anime-text .word {
-  display: inline-block;
-  position: relative;
-  margin-right: 0.2rem;
-  margin-bottom: 0.2rem;
-  padding: 0.1rem 0.2rem;
-  border-radius: 2rem;
-  will-change: background-color, opacity, transform;
-}
-
-.anime-text .word span.keyword {
-  position: relative;
-  display: inline-block;
-  padding: 0.1rem 0;
-  border-radius: 2rem;
-  color: #141414;
-}
-
-.anime-text .word span.keyword::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: calc(100% + 1rem);
-  height: calc(100% + 0.4rem);
-  border-radius: 2rem;
-  background-color: #ffffff;
-  z-index: -1;
-}
-
-/* Responsive text adjustments */
-@media (max-width: 768px) {
-  .anime-text p {
-    font-size: 1.4rem;
   }
 }
