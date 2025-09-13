@@ -153,3 +153,20 @@ section {
     margin: 0 0.2rem 0.1rem 0.1rem;
   }
 }
+
+/* === Fix black screen issue on pinned text animation === */
+.anime-text-container {
+  background: #fff;       /* white background (change if needed) */
+  min-height: 100vh;      /* make sure it covers the viewport */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;     /* safe for layering */
+  overflow: hidden;       /* prevent text from spilling */
+}
+
+.anime-text-container .copy-container {
+  max-width: 900px;       /* keeps text nicely contained */
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
