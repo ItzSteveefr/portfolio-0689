@@ -1,72 +1,724 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jithin's Gradient</title>
-    <link rel="stylesheet" href="/styles.css" />
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Jithin's Portfolio</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+        <style>
+            /* Reset & Base Styles */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-    <!-- Preloader CSS -->
-    <link rel="stylesheet" href="preloader-component/preloader-styles.css">
-</head>
-<body>
+            body {
+                font-family: "Host Grotesk", sans-serif;
+                overflow: hidden;
+            }
 
-    <!-- Preloader HTML (can also be injected by JS) -->
-    <div class="preloader-overlay hidden" id="preloader-overlay">
-        <div class="preloader-progress">
-            <div class="preloader-progress-bar"></div>
-            <div class="preloader-logo">
-                <h1 class="preloader-title">Loading...</h1>
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+            p {
+                color: #fff;
+                font-size: 0.9rem;
+                font-weight: 450;
+            }
+
+            /* Preloader Component Styles */
+            .preloader {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: #000;
+                color: #fff;
+                display: flex;
+                align-items: flex-end;
+                overflow: hidden;
+                z-index: 9999;
+                font-family: "PP Editorial Old", serif;
+            }
+
+            .preloader.hidden {
+                display: none;
+            }
+
+            .count-wrapper {
+                position: relative;
+                width: 180px;
+                height: 360px;
+                clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+                will-change: transform;
+            }
+
+            .count {
+                position: relative;
+                width: 1080px;
+                height: 360px;
+                display: flex;
+                justify-content: space-between;
+                transform: translateX(-1080px);
+                will-change: transform;
+            }
+
+            .digit {
+                position: relative;
+                width: 180px;
+                height: 360px;
+            }
+
+            .digit h1 {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: max-content;
+                font-size: 360px;
+                font-weight: lighter;
+                line-height: 1;
+                font-family: "PP Editorial Old", serif;
+            }
+
+            .revealer {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            /* Main Content Styles */
+            .main-content {
+                opacity: 0;
+                transform: scale(0.95);
+                transition: opacity 1.5s ease, transform 1.5s ease;
+            }
+
+            .main-content.loaded {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            /* Navigation & Footer */
+            nav,
+            .hero-footer {
+                position: absolute;
+                left: 0;
+                width: 100vw;
+                padding: 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                z-index: 2;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
+            }
+
+            .main-content.loaded nav,
+            .main-content.loaded .hero-footer {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .nav-items {
+                display: flex;
+                gap: 4rem;
+            }
+
+            nav .logo p {
+                font-weight: 700;
+            }
+
+            .hero-footer {
+                bottom: 0;
+                transition-delay: 0.7s;
+            }
+
+            /* Hero Section */
+            section.hero {
+                position: relative;
+                width: 100vw;
+                height: 100svh;
+                overflow: hidden;
+            }
+
+            .hero-logo {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%) scale(0.8);
+                width: 25%;
+                opacity: 0;
+                transition: opacity 1.2s ease 0.8s, transform 1.2s ease 0.8s;
+            }
+
+            .main-content.loaded .hero-logo {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            .gradient-canvas {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            /* Responsive */
+            @media (max-width: 1000px) {
+                nav {
+                    flex-direction: column;
+                    gap: 2rem;
+                }
+
+                .hero-logo {
+                    width: 40%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Preloader Component -->
+        <div class="preloader" id="preloader">
+            <div class="count-wrapper">
+                <div class="count">
+                    <div class="digit"><h1>9</h1></div>
+                    <div class="digit"><h1>8</h1></div>
+                    <div class="digit"><h1>7</h1></div>
+                    <div class="digit"><h1>4</h1></div>
+                    <div class="digit"><h1>2</h1></div>
+                    <div class="digit"><h1>0</h1></div>
+                </div>
+            </div>
+
+            <div class="count-wrapper">
+                <div class="count">
+                    <div class="digit"><h1>9</h1></div>
+                    <div class="digit"><h1>5</h1></div>
+                    <div class="digit"><h1>9</h1></div>
+                    <div class="digit"><h1>7</h1></div>
+                    <div class="digit"><h1>4</h1></div>
+                    <div class="digit"><h1>0</h1></div>
+                </div>
+            </div>
+
+            <div class="revealer revealer-1">
+                <svg width="151" height="148" viewBox="0 0 151 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="white"/>
+                </svg>
+            </div>
+
+            <div class="revealer revealer-2">
+                <svg width="151" height="148" viewBox="0 0 151 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="#CDFD50"/>
+                </svg>
+            </div>
+
+            <div class="revealer revealer-3">
+                <svg width="151" height="148" viewBox="0 0 151 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="black"/>
+                </svg>
             </div>
         </div>
-        <div class="preloader-mask"></div>
-        <div class="preloader-content">
-            <div class="preloader-footer">
-                <p class="preloader-description">
-                    Spaces unfold in light and shadow, where structure finds its quiet rhythm, and time align in harmony.
-                </p>
+
+        <!-- Main Content (Your Fluid Gradient Hero) -->
+        <div class="main-content" id="mainContent">
+            <nav>
+                <div class="logo">
+                    <p>Jithin's Portfolio</p>
+                </div>
+                <div class="nav-items">
+                    <p>Index</p>
+                    <p>Portfolio</p>
+                    <p>Info</p>
+                    <p>Contact</p>
+                </div>
+            </nav>
+            
+            <section class="hero">
+                <div class="gradient-canvas"></div>
+            <div class="hero-logo">
+                <img src="./logo-01.png" alt="Jithin's Portfolio" />
             </div>
+                <div class="hero-footer">
+                    <p>Experiment 0469</p>
+                    <p>Made by Jithin</p>
+                </div>
+            </section>
         </div>
-    </div>
 
-    <!-- Existing Navigation -->
-    <nav>
-        <div class="logo"><p>Jithin's Portfolio</p></div>
-        <div class="nav-items"></div>
-        <p>Index</p>
-        <p>Portfolio</p>
-        <p>Info</p>
-        <p>Contact</p>
-    </nav>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js" type="module"></script>
+        
+        <script type="module">
+            import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js";
 
-    <!-- Existing Hero Section -->
-    <section class="hero">
-        <div class="gradient-canvas"></div>
-        <div class="hero-logo">
-            <img src="/logo_01.png" alt="" />
-        </div>
-        <div class="hero-footer">
-            <p>Experiment 0469</p>
-            <p>Made by Jithin</p>
-        </div>
-    </section>
+            // Shader definitions
+            const vertexShader = `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `;
 
-    <!-- Existing Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
-    <script src="preloader-component/preloader-script.js"></script>
-    <script type="module" src="/shaders.js"></script>
-    <script type="module" src="/script.js"></script>
+            const fluidShader = `
+                uniform float iTime;
+                uniform vec2 iResolution;
+                uniform vec4 iMouse;
+                uniform int iFrame;
+                uniform sampler2D iPreviousFrame;
+                uniform float uBrushSize;
+                uniform float uBrushStrength;
+                uniform float uFluidDecay;
+                uniform float uTrailLength;
+                uniform float uStopDecay;
+                varying vec2 vUv;
+                
+                vec2 ur, U;
+                
+                float ln(vec2 p, vec2 a, vec2 b) {
+                    return length(p-a-(b-a)*clamp(dot(p-a,b-a)/dot(b-a,b-a),0.,1.));
+                }
+                
+                vec4 t(vec2 v, int a, int b) {
+                    return texture2D(iPreviousFrame, fract((v+vec2(float(a),float(b)))/ur));
+                }
+                
+                vec4 t(vec2 v) {
+                    return texture2D(iPreviousFrame, fract(v/ur));
+                }
+                
+                float area(vec2 a, vec2 b, vec2 c) {
+                    float A = length(b-c), B = length(c-a), C = length(a-b), s = 0.5*(A+B+C);
+                    return sqrt(s*(s-A)*(s-B)*(s-C));
+                }
+                
+                void main() {
+                    U = vUv * iResolution;
+                    ur = iResolution.xy;
+                    
+                    if (iFrame < 1) {
+                        float w = 0.5+sin(0.2*U.x)*0.5;
+                        float q = length(U-0.5*ur);
+                        gl_FragColor = vec4(0.1*exp(-0.001*q*q),0,0,w);
+                    } else {
+                        vec2 v = U,
+                             A = v + vec2( 1, 1),
+                             B = v + vec2( 1,-1),
+                             C = v + vec2(-1, 1),
+                             D = v + vec2(-1,-1);
+                        
+                        for (int i = 0; i < 8; i++) {
+                            v -= t(v).xy;
+                            A -= t(A).xy;
+                            B -= t(B).xy;
+                            C -= t(C).xy;
+                            D -= t(D).xy;
+                        }
+                        
+                        vec4 me = t(v);
+                        vec4 n = t(v, 0, 1),
+                            e = t(v, 1, 0),
+                            s = t(v, 0, -1),
+                            w = t(v, -1, 0);
+                        vec4 ne = .25*(n+e+s+w);
+                        me = mix(t(v), ne, vec4(0.15,0.15,0.95,0.));
+                        me.z = me.z - 0.01*((area(A,B,C)+area(B,C,D))-4.);
+                        
+                        vec4 pr = vec4(e.z,w.z,n.z,s.z);
+                        me.xy = me.xy + 100.*vec2(pr.x-pr.y, pr.z-pr.w)/ur;
+                        
+                        me.xy *= uFluidDecay;
+                        me.z *= uTrailLength;
+                        
+                        if (iMouse.z > 0.0) {
+                            vec2 mousePos = iMouse.xy;
+                            vec2 mousePrev = iMouse.zw;
+                            vec2 mouseVel = mousePos - mousePrev;
+                            float velMagnitude = length(mouseVel);
+                            float q = ln(U, mousePos, mousePrev);
+                            vec2 m = mousePos - mousePrev;
+                            float l = length(m);
+                            if (l > 0.0) m = min(l, 10.0) * m / l;
+                            
+                            float brushSizeFactor = 1e-4 / uBrushSize;
+                            float strengthFactor = 0.03 * uBrushStrength;
+                            
+                            float falloff = exp(-brushSizeFactor*q*q*q);
+                            falloff = pow(falloff, 0.5);
+                            
+                            me.xyw += strengthFactor * falloff * vec3(m, 10.);
+                            
+                            if (velMagnitude < 2.0) {
+                                float distToCursor = length(U - mousePos);
+                                float influence = exp(-distToCursor * 0.01);
+                                float cursorDecay = mix(1.0, uStopDecay, influence);
+                                me.xy *= cursorDecay;
+                                me.z *= cursorDecay;
+                            }
+                        }
+                        
+                        gl_FragColor = clamp(me, -0.4, 0.4);
+                    }
+                }
+            `;
 
-    <script>
-        // Show the preloader immediately on page load
-        showPreloader();
+            const displayShader = `
+                uniform float iTime;
+                uniform vec2 iResolution;
+                uniform sampler2D iFluid;
+                uniform float uDistortionAmount;
+                uniform vec3 uColor1;
+                uniform vec3 uColor2;
+                uniform vec3 uColor3;
+                uniform vec3 uColor4;
+                uniform float uColorIntensity;
+                uniform float uSoftness;
+                varying vec2 vUv;
+                
+                void main() {
+                    vec2 fragCoord = vUv * iResolution;
+                    
+                    vec4 fluid = texture2D(iFluid, vUv);
+                    vec2 fluidVel = fluid.xy;
+                    
+                    float mr = min(iResolution.x, iResolution.y);
+                    vec2 uv = (fragCoord * 2.0 - iResolution.xy) / mr;
+                    
+                    uv += fluidVel * (0.5 * uDistortionAmount);
+                    
+                    float d = -iTime * 0.5;
+                    float a = 0.0;
+                    for (float i = 0.0; i < 8.0; ++i) {
+                        a += cos(i - d - a * uv.x);
+                        d += sin(uv.y * i + a);
+                    }
+                    d += iTime * 0.5;
+                    
+                    float mixer1 = cos(uv.x * d) * 0.5 + 0.5;
+                    float mixer2 = cos(uv.y * a) * 0.5 + 0.5;
+                    float mixer3 = sin(d + a) * 0.5 + 0.5;
+                    
+                    float smoothAmount = clamp(uSoftness * 0.1, 0.0, 0.9);
+                    mixer1 = mix(mixer1, 0.5, smoothAmount);
+                    mixer2 = mix(mixer2, 0.5, smoothAmount);
+                    mixer3 = mix(mixer3, 0.5, smoothAmount);
+                    
+                    vec3 col = mix(uColor1, uColor2, mixer1);
+                    col = mix(col, uColor3, mixer2);
+                    col = mix(col, uColor4, mixer3 * 0.4);
+                    
+                    col *= uColorIntensity;
+                    
+                    gl_FragColor = vec4(col, 1.0);
+                }
+            `;
 
-        // Hide the preloader once shaders and assets are ready
-        window.addEventListener('load', () => {
-            hidePreloader();
-        });
-    </script>
+            // Preloader Animation Class
+            class PreloaderAnimation {
+                constructor(options = {}) {
+                    this.preloader = document.getElementById(options.preloaderId || 'preloader');
+                    this.mainContent = document.getElementById(options.mainContentId || 'mainContent');
+                    this.onComplete = options.onComplete || (() => {});
+                    this.timeline = gsap.timeline();
+                    
+                    this.init();
+                }
 
-</body>
+                init() {
+                    if (!this.preloader) {
+                        console.error('Preloader element not found');
+                        return;
+                    }
+
+                    this.setupAnimation();
+                }
+
+                setupAnimation() {
+                    const windowWidth = window.innerWidth;
+                    const wrapperWidth = 180;
+                    const finalPosition = windowWidth - wrapperWidth;
+                    const stepDistance = finalPosition / 6;
+
+                    this.timeline.to(".count", {
+                        x: -900,
+                        duration: 0.85,
+                        delay: 0.5,
+                        ease: "power4.inOut",
+                    });
+
+                    for (let i = 1; i <= 6; i++) {
+                        const xPosition = -900 + i * 180;
+                        this.timeline.to(".count", {
+                            x: xPosition,
+                            duration: 0.85,
+                            ease: "power4.inOut",
+                            onStart: () => {
+                                gsap.to(".count-wrapper", {
+                                    x: stepDistance * i,
+                                    duration: 0.85,
+                                    ease: "power4.inOut",
+                                });
+                            },
+                        });
+                    }
+
+                    gsap.set(".revealer svg", { scale: 0 });
+
+                    const delays = [6, 6.5, 7];
+                    document.querySelectorAll(".revealer svg").forEach((el, i) => {
+                        gsap.to(el, {
+                            scale: 45,
+                            duration: 1.5,
+                            ease: "power4.inOut",
+                            delay: delays[i],
+                            onComplete: () => {
+                                if (i === delays.length - 1) {
+                                    this.completeAnimation();
+                                }
+                            },
+                        });
+                    });
+                }
+
+                completeAnimation() {
+                    if (this.preloader) {
+                        this.preloader.classList.add('hidden');
+                        setTimeout(() => {
+                            this.preloader.remove();
+                        }, 100);
+                    }
+
+                    if (this.mainContent) {
+                        this.mainContent.classList.add('loaded');
+                        document.body.style.overflow = 'auto';
+                    }
+
+                    this.onComplete();
+                }
+
+                skipAnimation() {
+                    this.timeline.kill();
+                    gsap.killTweensOf(".count, .count-wrapper, .revealer svg");
+                    this.completeAnimation();
+                }
+            }
+
+            // Fluid Gradient System
+            class FluidGradient {
+                constructor() {
+                    this.config = {
+                        brushSize: 25.0,
+                        brushStrength: 0.5,
+                        distortionAmount: 2.5,
+                        fluidDecay: 0.98,
+                        trailLength: 0.8,
+                        stopDecay: 0.85,
+                        color1: "#000000",
+                        color2: "#111111", 
+                        color3: "#222222",
+                        color4: "#333333",
+                        colorIntensity: 1.0,
+                        softness: 1.0,
+                    };
+
+                    this.mouseX = 0;
+                    this.mouseY = 0;
+                    this.prevMouseX = 0;
+                    this.prevMouseY = 0;
+                    this.lastMoveTime = 0;
+                    this.frameCount = 0;
+                    this.isInitialized = false;
+                }
+
+                hexToRgb(hex) {
+                    const r = parseInt(hex.slice(1, 3), 16) / 255;
+                    const g = parseInt(hex.slice(3, 5), 16) / 255;
+                    const b = parseInt(hex.slice(5, 7), 16) / 255;
+                    return [r, g, b];
+                }
+
+                init() {
+                    if (this.isInitialized) return;
+
+                    const gradientCanvas = document.querySelector(".gradient-canvas");
+                    if (!gradientCanvas) return;
+
+                    this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+                    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+                    
+                    this.renderer.setSize(window.innerWidth, window.innerHeight);
+                    gradientCanvas.appendChild(this.renderer.domElement);
+
+                    this.setupRenderTargets();
+                    this.setupMaterials();
+                    this.setupGeometry();
+                    this.setupEventListeners();
+
+                    this.isInitialized = true;
+                    this.animate();
+                }
+
+                setupRenderTargets() {
+                    const rtOptions = {
+                        minFilter: THREE.LinearFilter,
+                        magFilter: THREE.LinearFilter,
+                        format: THREE.RGBAFormat,
+                        type: THREE.FloatType,
+                    };
+
+                    this.fluidTarget1 = new THREE.WebGLRenderTarget(
+                        window.innerWidth, window.innerHeight, rtOptions
+                    );
+                    this.fluidTarget2 = new THREE.WebGLRenderTarget(
+                        window.innerWidth, window.innerHeight, rtOptions
+                    );
+
+                    this.currentFluidTarget = this.fluidTarget1;
+                    this.previousFluidTarget = this.fluidTarget2;
+                }
+
+                setupMaterials() {
+                    this.fluidMaterial = new THREE.ShaderMaterial({
+                        uniforms: {
+                            iTime: { value: 0 },
+                            iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                            iMouse: { value: new THREE.Vector4(0, 0, 0, 0) },
+                            iFrame: { value: 0 },
+                            iPreviousFrame: { value: null },
+                            uBrushSize: { value: this.config.brushSize },
+                            uBrushStrength: { value: this.config.brushStrength },
+                            uFluidDecay: { value: this.config.fluidDecay },
+                            uTrailLength: { value: this.config.trailLength },
+                            uStopDecay: { value: this.config.stopDecay },
+                        },
+                        vertexShader: vertexShader,
+                        fragmentShader: fluidShader,
+                    });
+
+                    this.displayMaterial = new THREE.ShaderMaterial({
+                        uniforms: {
+                            iTime: { value: 0 },
+                            iResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+                            iFluid: { value: null },
+                            uDistortionAmount: { value: this.config.distortionAmount },
+                            uColor1: { value: new THREE.Vector3(...this.hexToRgb(this.config.color1)) },
+                            uColor2: { value: new THREE.Vector3(...this.hexToRgb(this.config.color2)) },
+                            uColor3: { value: new THREE.Vector3(...this.hexToRgb(this.config.color3)) },
+                            uColor4: { value: new THREE.Vector3(...this.hexToRgb(this.config.color4)) },
+                            uColorIntensity: { value: this.config.colorIntensity },
+                            uSoftness: { value: this.config.softness },
+                        },
+                        vertexShader: vertexShader,
+                        fragmentShader: displayShader,
+                    });
+                }
+
+                setupGeometry() {
+                    this.geometry = new THREE.PlaneGeometry(2, 2);
+                    this.fluidPlane = new THREE.Mesh(this.geometry, this.fluidMaterial);
+                    this.displayPlane = new THREE.Mesh(this.geometry, this.displayMaterial);
+                }
+
+                setupEventListeners() {
+                    const gradientCanvas = document.querySelector(".gradient-canvas");
+                    
+                    document.addEventListener("mousemove", (e) => {
+                        const rect = gradientCanvas.getBoundingClientRect();
+                        this.prevMouseX = this.mouseX;
+                        this.prevMouseY = this.mouseY;
+                        this.mouseX = e.clientX - rect.left;
+                        this.mouseY = rect.height - (e.clientY - rect.top);
+                        this.lastMoveTime = performance.now();
+
+                        this.fluidMaterial.uniforms.iMouse.value.set(
+                            this.mouseX, this.mouseY, this.prevMouseX, this.prevMouseY
+                        );
+                    });
+
+                    document.addEventListener("mouseleave", () => {
+                        this.fluidMaterial.uniforms.iMouse.value.set(0, 0, 0, 0);
+                    });
+
+                    window.addEventListener("resize", () => {
+                        const width = window.innerWidth;
+                        const height = window.innerHeight;
+
+                        this.renderer.setSize(width, height);
+                        this.fluidMaterial.uniforms.iResolution.value.set(width, height);
+                        this.displayMaterial.uniforms.iResolution.value.set(width, height);
+
+                        this.fluidTarget1.setSize(width, height);
+                        this.fluidTarget2.setSize(width, height);
+                        this.frameCount = 0;
+                    });
+                }
+
+                animate() {
+                    requestAnimationFrame(() => this.animate());
+
+                    const time = performance.now() * 0.001;
+                    this.fluidMaterial.uniforms.iTime.value = time;
+                    this.displayMaterial.uniforms.iTime.value = time;
+                    this.fluidMaterial.uniforms.iFrame.value = this.frameCount;
+
+                    if (performance.now() - this.lastMoveTime > 100) {
+                        this.fluidMaterial.uniforms.iMouse.value.set(0, 0, 0, 0);
+                    }
+
+                    this.fluidMaterial.uniforms.iPreviousFrame.value = this.previousFluidTarget.texture;
+
+                    this.renderer.setRenderTarget(this.currentFluidTarget);
+                    this.renderer.render(this.fluidPlane, this.camera);
+
+                    this.displayMaterial.uniforms.iFluid.value = this.currentFluidTarget.texture;
+                    this.renderer.setRenderTarget(null);
+                    this.renderer.render(this.displayPlane, this.camera);
+
+                    const temp = this.currentFluidTarget;
+                    this.currentFluidTarget = this.previousFluidTarget;
+                    this.previousFluidTarget = temp;
+
+                    this.frameCount++;
+                }
+            }
+
+            // Initialize everything when DOM is ready
+            document.addEventListener("DOMContentLoaded", () => {
+                const fluidGradient = new FluidGradient();
+
+                // Initialize preloader
+                const preloader = new PreloaderAnimation({
+                    preloaderId: 'preloader',
+                    mainContentId: 'mainContent',
+                    onComplete: () => {
+                        console.log('Preloader complete! Initializing fluid gradient...');
+                        // Initialize fluid gradient after preloader completes
+                        setTimeout(() => {
+                            fluidGradient.init();
+                        }, 500); // Small delay to ensure smooth transition
+                    }
+                });
+
+                // Escape key to skip preloader
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        preloader.skipAnimation();
+                        fluidGradient.init();
+                    }
+                });
+            });
+        </script>
+    </body>
 </html>
