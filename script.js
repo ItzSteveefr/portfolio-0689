@@ -70,15 +70,23 @@ class PreloaderAnimation {
 
   completeAnimation() {
     if (this.preloader) {
+      // Trigger fade-out
       this.preloader.classList.add("hidden");
-      setTimeout(() => this.preloader.remove(), 100);
+
+      // Remove DOM after fade completes
+      setTimeout(() => {
+        this.preloader.remove();
+      }, 900); // matches CSS transition (0.8s)
     }
+
     if (this.mainContent) {
       this.mainContent.classList.add("loaded");
       document.body.style.overflow = "auto";
     }
+
     this.onComplete();
-  }
+}
+
 
   skipAnimation() {
     this.timeline.kill();
