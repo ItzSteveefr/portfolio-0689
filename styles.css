@@ -193,3 +193,27 @@ section.hero {
     width: 40%;
   }
 }
+
+/* --- Hero adjustments --- */
+.hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.hero .gradient-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* keep hero background behind everything */
+}
+
+/* --- About/Text Reveal section --- */
+.anime-text-container {
+  position: relative;
+  z-index: 10;               /* sits above hero */
+  background: rgba(255, 255, 255, 0.95); /* semi-transparent overlay */
+  min-height: 100vh;         /* full viewport height */
+}
