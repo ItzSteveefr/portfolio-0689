@@ -258,22 +258,23 @@ class FluidGradient {
 
 /* ================= INITIALIZATION ================= */
 document.addEventListener("DOMContentLoaded", () => {
+  // 🔥 Start fluid gradient immediately (behind preloader)
   const fluidGradient = new FluidGradient();
+  fluidGradient.init();
 
+  // Preloader runs above it, revealing hero once finished
   const preloader = new PreloaderAnimation({
     preloaderId: "preloader",
     mainContentId: "mainContent",
     onComplete: () => {
-    console.log("Preloader complete → initializing fluid gradient...");
-    fluidGradient.init(); // no setTimeout
+      console.log("Preloader complete → hero already running");
     },
   });
 
-  // Dev shortcut: skip animation with Escape key
+  // Dev shortcut: skip animation with Escape
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       preloader.skipAnimation();
-      fluidGradient.init();
     }
   });
 });
