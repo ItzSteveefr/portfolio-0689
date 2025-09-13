@@ -155,16 +155,3 @@ animeTextContainers.forEach((container) => {
     },
   });
 });
-
-// =====================
-// OPTIONAL: Fade in section as it overlaps hero
-// =====================
-gsap.from(".anime-text-container", {
-  scrollTrigger: {
-    trigger: ".anime-text-container",
-    start: "top bottom",
-    end: "top center",
-    scrub: true
-  },
-  opacity: 0
-});
