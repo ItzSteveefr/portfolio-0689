@@ -193,3 +193,10 @@ section.hero {
     width: 40%;
   }
 }
+
+/* Entire about component overlaps hero */
+#text-animation-placeholder {
+  position: relative;
+  z-index: 10;                     /* above hero */
+  background: rgba(255, 255, 255, 0.95); /* semi-transparent or solid */
+}
