@@ -10,7 +10,8 @@
 body {
   font-family: "Host Grotesk", sans-serif;
   overflow: hidden;
-  background-color: #000;
+  background: #000;
+  color: #fff;
 }
 
 img {
@@ -20,7 +21,6 @@ img {
 }
 
 p {
-  color: #fff;
   font-size: 0.9rem;
   font-weight: 450;
 }
@@ -41,22 +41,18 @@ p {
   overflow: hidden;
   z-index: 9999;
   font-family: "PP Editorial Old", serif;
-
-  /* Fade-out transition */
-  opacity: 1;
-  transition: opacity 0.8s ease;
 }
 
 .preloader.hidden {
   opacity: 0;
-  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 
 .count-wrapper {
   position: relative;
   width: 180px;
   height: 360px;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   will-change: transform;
 }
 
@@ -81,7 +77,6 @@ p {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: max-content;
   font-size: 360px;
   font-weight: lighter;
   line-height: 1;
@@ -96,12 +91,12 @@ p {
 }
 
 /* ===================== */
-/* MAIN CONTENT          */
+/* MAIN CONTENT WRAPPER  */
 /* ===================== */
 .main-content {
   opacity: 0;
   transform: scale(0.95);
-  transition: opacity 1.5s ease, transform 1.5s ease;
+  transition: opacity 1s ease, transform 1s ease;
 }
 
 .main-content.loaded {
@@ -178,6 +173,31 @@ section.hero {
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+/* ===================== */
+/* TEXT ANIMATION SEC.   */
+/* ===================== */
+.anime-text-container {
+  background: #000;
+  color: #fff;
+  padding: 10rem 2rem;
+  font-family: "DM Sans", sans-serif;
+  overflow: hidden;
+}
+
+.copy-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.anime-text p {
+  font-size: clamp(1.2rem, 2.5vw, 2rem);
+  line-height: 1.6;
+  font-weight: 400;
+  opacity: 0; /* start hidden for animation */
+  transform: translateY(30px);
+  margin-bottom: 2.5rem;
 }
 
 /* ===================== */
