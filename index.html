@@ -1,142 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jithin's Portfolio</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jithin's Portfolio</title>
 
-    <!-- Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
-      rel="stylesheet"
-    />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <!-- ================= PRELOADER ================= -->
-    <div class="preloader" id="preloader">
-      <div class="count-wrapper">
-        <div class="count">
-          <div class="digit"><h1>9</h1></div>
-          <div class="digit"><h1>8</h1></div>
-          <div class="digit"><h1>7</h1></div>
-          <div class="digit"><h1>4</h1></div>
-          <div class="digit"><h1>2</h1></div>
-          <div class="digit"><h1>0</h1></div>
-        </div>
-      </div>
-
-      <div class="count-wrapper">
-        <div class="count">
-          <div class="digit"><h1>9</h1></div>
-          <div class="digit"><h1>5</h1></div>
-          <div class="digit"><h1>9</h1></div>
-          <div class="digit"><h1>7</h1></div>
-          <div class="digit"><h1>4</h1></div>
-          <div class="digit"><h1>0</h1></div>
-        </div>
-      </div>
-
-      <div class="revealer revealer-1">
-        <svg
-          width="151"
-          height="148"
-          viewBox="0 0 151 148"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z"
-            fill="white"
-          />
-        </svg>
-      </div>
-
-      <div class="revealer revealer-2">
-        <svg
-          width="151"
-          height="148"
-          viewBox="0 0 151 148"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z"
-            fill="#CDFD50"
-          />
-        </svg>
-      </div>
-
-      <div class="revealer revealer-3">
-        <svg
-          width="151"
-          height="148"
-          viewBox="0 0 151 148"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z"
-            fill="black"
-          />
-        </svg>
+  <!-- Main stylesheet (no text-animation component) -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ================= PRELOADER ================= -->
+  <div class="preloader" id="preloader">
+    <!-- Counter wrappers -->
+    <div class="count-wrapper">
+      <div class="count">
+        <div class="digit"><h1>9</h1></div>
+        <div class="digit"><h1>8</h1></div>
+        <div class="digit"><h1>7</h1></div>
+        <div class="digit"><h1>4</h1></div>
+        <div class="digit"><h1>2</h1></div>
+        <div class="digit"><h1>0</h1></div>
       </div>
     </div>
 
-    <!-- ================= MAIN CONTENT ================= -->
-    <div class="main-content" id="mainContent">
-      <!-- Navigation -->
-      <nav>
-        <div class="logo">
-          <p>Jithin's Portfolio</p>
-        </div>
-        <div class="nav-items">
-          <p>Index</p>
-          <p>Portfolio</p>
-          <p>Info</p>
-          <p>Contact</p>
-        </div>
-      </nav>
-
-      <!-- Hero Section with Fluid Gradient -->
-      <section class="hero">
-        <div class="gradient-canvas"></div>
-        <div class="hero-logo">
-          <img src="./logo_01.png" alt="Jithin's Portfolio" />
-        </div>
-        <div class="hero-footer">
-          <p>Experiment 0469</p>
-          <p>Made by Jithin</p>
-        </div>
-      </section>
-
-      <!-- ================= TEXT ANIMATION SECTION ================= -->
-      <section class="about anime-text-container">
-        <div class="copy-container">
-          <div class="anime-text">
-            <p>
-              We craft vibrant digital experiences that transform your brand into
-              a living, breathing entity. Our approach brings clarity to complex
-              ideas through intuitive design that resonates with your audience on
-              every level.
-            </p>
-            <p>
-              Every project begins with understanding your unique vision. We
-              believe in the power of interactive storytelling to create
-              meaningful connections between brands and their communities through
-              purposeful expression.
-            </p>
-          </div>
-        </div>
-      </section>
+    <div class="count-wrapper">
+      <div class="count">
+        <div class="digit"><h1>9</h1></div>
+        <div class="digit"><h1>5</h1></div>
+        <div class="digit"><h1>9</h1></div>
+        <div class="digit"><h1>7</h1></div>
+        <div class="digit"><h1>4</h1></div>
+        <div class="digit"><h1>0</h1></div>
+      </div>
     </div>
 
-    <!-- ================= SCRIPTS ================= -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js" type="module"></script>
-    <script src="script.js" type="module"></script>
-  </body>
+    <!-- Revealer shapes -->
+    <div class="revealer revealer-1">
+      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
+        <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="white"/>
+      </svg>
+    </div>
+
+    <div class="revealer revealer-2">
+      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
+        <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="#CDFD50"/>
+      </svg>
+    </div>
+
+    <div class="revealer revealer-3">
+      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
+        <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="black"/>
+      </svg>
+    </div>
+  </div>
+  <!-- ================= END PRELOADER ================= -->
+
+  <!-- ================= MAIN CONTENT (Hero) ================= -->
+  <div class="main-content" id="mainContent">
+    <!-- Navigation -->
+    <nav>
+      <div class="logo"><p>Jithin's Portfolio</p></div>
+      <div class="nav-items">
+        <p>Index</p>
+        <p>Portfolio</p>
+        <p>Info</p>
+        <p>Contact</p>
+      </div>
+    </nav>
+
+    <!-- Hero Section (WebGL will render into .gradient-canvas) -->
+    <section class="hero">
+      <div class="gradient-canvas"></div>
+
+      <div class="hero-logo">
+        <img src="./logo_01.png" alt="Jithin's Portfolio" />
+      </div>
+
+      <div class="hero-footer">
+        <p>Experiment 0469</p>
+        <p>Made by Jithin</p>
+      </div>
+    </section>
+  </div>
+  <!-- ================= END MAIN CONTENT ================= -->
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- Main script (module) - imports shaders.js -->
+  <script type="module" src="script.js"></script>
+</body>
 </html>
