@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Host+Grotesk:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
 
-  <!-- Main stylesheet (no text-animation component) -->
+  <!-- Main stylesheet -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -73,26 +73,36 @@
       </div>
     </nav>
 
-    <!-- Hero Section (WebGL will render into .gradient-canvas) -->
+    <!-- Hero Section -->
     <section class="hero">
       <div class="gradient-canvas"></div>
-
       <div class="hero-logo">
         <img src="./logo_01.png" alt="Jithin's Portfolio" />
       </div>
-
       <div class="hero-footer">
         <p>Experiment 0469</p>
         <p>Made by Jithin</p>
       </div>
     </section>
+
+    <!-- Placeholder for Text Reveal Component -->
+    <div id="text-animation-placeholder"></div>
   </div>
   <!-- ================= END MAIN CONTENT ================= -->
 
   <!-- Libraries -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
-  <!-- Main script (module) - imports shaders.js -->
+  <!-- Main script (portfolio preloader + hero) -->
   <script type="module" src="script.js"></script>
+
+  <!-- Load text animation component dynamically -->
+  <script>
+    fetch("components/about/index.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("text-animation-placeholder").innerHTML = html;
+      });
+  </script>
 </body>
 </html>
