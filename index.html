@@ -41,20 +41,35 @@
 
     <!-- Revealer shapes -->
     <div class="revealer revealer-1">
-      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
-        <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="white"/>
+      <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+        <path d="M75 0 
+                 C85 35, 115 65, 150 75 
+                 C115 85, 85 115, 75 150 
+                 C65 115, 35 85, 0 75 
+                 C35 65, 65 35, 75 0Z" 
+              fill="white"/>
       </svg>
     </div>
 
     <div class="revealer revealer-2">
-      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
-        <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="#CDFD50"/>
+      <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+        <path d="M75 0 
+                 C85 35, 115 65, 150 75 
+                 C115 85, 85 115, 75 150 
+                 C65 115, 35 85, 0 75 
+                 C35 65, 65 35, 75 0Z" 
+              fill="#CDFD50"/>
       </svg>
     </div>
 
     <div class="revealer revealer-3">
-      <svg width="151" height="148" viewBox="0 0 151 148" xmlns="http://www.w3.org/2000/svg">
-        <path d="M75.9817 0L77.25 34.2209C78.0259 55.1571 94.8249 71.9475 115.762 72.7127L150.982 74L115.762 75.2873C94.8249 76.0525 78.0259 92.8429 77.25 113.779L75.9817 148L74.7134 113.779C73.9375 92.8429 57.1385 76.0525 36.2019 75.2873L0.981689 74L36.2018 72.7127C57.1384 71.9475 73.9375 55.1571 74.7134 34.2209L75.9817 0Z" fill="black"/>
+      <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+        <path d="M75 0 
+                 C85 35, 115 65, 150 75 
+                 C115 85, 85 115, 75 150 
+                 C65 115, 35 85, 0 75 
+                 C35 65, 65 35, 75 0Z" 
+              fill="black"/>
       </svg>
     </div>
   </div>
@@ -90,42 +105,41 @@
   </div>
   <!-- ================= END MAIN CONTENT ================= -->
 
-<!-- Libraries (global) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
+  <!-- Libraries (global) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
 
-<!-- Main script (portfolio preloader + hero) -->
-<script type="module" src="script.js"></script>
+  <!-- Main script (portfolio preloader + hero) -->
+  <script type="module" src="script.js"></script>
 
   <!-- Load text animation component dynamically -->
-<!-- Load text animation component dynamically -->
-<script>
-  fetch("components/about/index.html")
-    .then(res => res.text())
-    .then(html => {
-      const placeholder = document.getElementById("text-animation-placeholder");
-      placeholder.innerHTML = html;
+  <script>
+    fetch("components/about/index.html")
+      .then(res => res.text())
+      .then(html => {
+        const placeholder = document.getElementById("text-animation-placeholder");
+        placeholder.innerHTML = html;
 
-      // Find and load linked CSS
-      placeholder.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-        const newLink = document.createElement("link");
-        newLink.rel = "stylesheet";
-        newLink.href = "components/about/" + link.getAttribute("href");
-        document.head.appendChild(newLink);
-      });
+        // Find and load linked CSS
+        placeholder.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
+          const newLink = document.createElement("link");
+          newLink.rel = "stylesheet";
+          newLink.href = "components/about/" + link.getAttribute("href");
+          document.head.appendChild(newLink);
+        });
 
-      // Find and load scripts
-      placeholder.querySelectorAll("script").forEach(oldScript => {
-        const newScript = document.createElement("script");
-        if (oldScript.src) {
-          newScript.src = "components/about/" + oldScript.getAttribute("src");
-        } else {
-          newScript.textContent = oldScript.textContent;
-        }
-        document.body.appendChild(newScript);
+        // Find and load scripts
+        placeholder.querySelectorAll("script").forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = "components/about/" + oldScript.getAttribute("src");
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+        });
       });
-    });
-</script>
+  </script>
 </body>
 </html>
