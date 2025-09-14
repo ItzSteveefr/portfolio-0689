@@ -39,22 +39,55 @@
       </div>
     </div>
 
-    <!-- Revealer shapes (circles) -->
+    <!-- Revealer shapes -->
     <div class="revealer revealer-1">
       <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="75" cy="75" r="75" fill="white"/>
+        <defs>
+          <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#A1FFCE"/>
+            <stop offset="100%" stop-color="#FAFFD1"/>
+          </linearGradient>
+        </defs>
+        <path d="M75 0 
+                 C85 35, 115 65, 150 75 
+                 C115 85, 85 115, 75 150 
+                 C65 115, 35 85, 0 75 
+                 C35 65, 65 35, 75 0Z" 
+              fill="url(#gradient1)"/>
       </svg>
     </div>
 
     <div class="revealer revealer-2">
       <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="75" cy="75" r="75" fill="#CDFD50"/>
+        <defs>
+          <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6C63FF"/>
+            <stop offset="100%" stop-color="#48C6EF"/>
+          </linearGradient>
+        </defs>
+        <path d="M75 0 
+                 C85 35, 115 65, 150 75 
+                 C115 85, 85 115, 75 150 
+                 C65 115, 35 85, 0 75 
+                 C35 65, 65 35, 75 0Z" 
+              fill="url(#gradient2)"/>
       </svg>
     </div>
 
     <div class="revealer revealer-3">
       <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="75" cy="75" r="75" fill="black"/>
+        <defs>
+          <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1E1E2E"/>
+            <stop offset="100%" stop-color="#4A4E69"/>
+          </linearGradient>
+        </defs>
+        <path d="M75 0 
+                 C85 35, 115 65, 150 75 
+                 C115 85, 85 115, 75 150 
+                 C65 115, 35 85, 0 75 
+                 C35 65, 65 35, 75 0Z" 
+              fill="url(#gradient3)"/>
       </svg>
     </div>
   </div>
@@ -125,6 +158,46 @@
           document.body.appendChild(newScript);
         });
       });
+
+    // Animate gradient colors with GSAP
+    gsap.to("#gradient1 stop:first-child", {
+      stopColor: "#FFDEE9",
+      duration: 3,
+      repeat: -1,
+      yoyo: true
+    });
+    gsap.to("#gradient1 stop:last-child", {
+      stopColor: "#B5FFFC",
+      duration: 3,
+      repeat: -1,
+      yoyo: true
+    });
+
+    gsap.to("#gradient2 stop:first-child", {
+      stopColor: "#FF9A9E",
+      duration: 3,
+      repeat: -1,
+      yoyo: true
+    });
+    gsap.to("#gradient2 stop:last-child", {
+      stopColor: "#FAD0C4",
+      duration: 3,
+      repeat: -1,
+      yoyo: true
+    });
+
+    gsap.to("#gradient3 stop:first-child", {
+      stopColor: "#434343",
+      duration: 3,
+      repeat: -1,
+      yoyo: true
+    });
+    gsap.to("#gradient3 stop:last-child", {
+      stopColor: "#000000",
+      duration: 3,
+      repeat: -1,
+      yoyo: true
+    });
   </script>
 </body>
 </html>
