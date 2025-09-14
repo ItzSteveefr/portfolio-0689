@@ -44,8 +44,8 @@
       <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#A1FFCE"/>
-            <stop offset="100%" stop-color="#FAFFD1"/>
+            <stop offset="0%" stop-color="#FFFFFF"/>
+            <stop offset="100%" stop-color="#E0E0E0"/>
           </linearGradient>
         </defs>
         <path d="M75 0 
@@ -61,8 +61,8 @@
       <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#6C63FF"/>
-            <stop offset="100%" stop-color="#48C6EF"/>
+            <stop offset="0%" stop-color="#FFD700"/> <!-- gold -->
+            <stop offset="100%" stop-color="#FFA500"/> <!-- warm gold -->
           </linearGradient>
         </defs>
         <path d="M75 0 
@@ -78,8 +78,8 @@
       <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="gradient3" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#1E1E2E"/>
-            <stop offset="100%" stop-color="#4A4E69"/>
+            <stop offset="0%" stop-color="#000000"/>
+            <stop offset="100%" stop-color="#2C2C2C"/>
           </linearGradient>
         </defs>
         <path d="M75 0 
@@ -159,41 +159,41 @@
         });
       });
 
-    // Animate gradient colors with GSAP
+    // Animate gradient colors with GSAP (black/white/gold)
     gsap.to("#gradient1 stop:first-child", {
-      stopColor: "#FFDEE9",
+      stopColor: "#F5F5F5",
       duration: 3,
       repeat: -1,
       yoyo: true
     });
     gsap.to("#gradient1 stop:last-child", {
-      stopColor: "#B5FFFC",
+      stopColor: "#CCCCCC",
       duration: 3,
       repeat: -1,
       yoyo: true
     });
 
     gsap.to("#gradient2 stop:first-child", {
-      stopColor: "#FF9A9E",
+      stopColor: "#FFD700",
       duration: 3,
       repeat: -1,
       yoyo: true
     });
     gsap.to("#gradient2 stop:last-child", {
-      stopColor: "#FAD0C4",
+      stopColor: "#FFB84D",
       duration: 3,
       repeat: -1,
       yoyo: true
     });
 
     gsap.to("#gradient3 stop:first-child", {
-      stopColor: "#434343",
+      stopColor: "#000000",
       duration: 3,
       repeat: -1,
       yoyo: true
     });
     gsap.to("#gradient3 stop:last-child", {
-      stopColor: "#000000",
+      stopColor: "#3D3D3D",
       duration: 3,
       repeat: -1,
       yoyo: true
